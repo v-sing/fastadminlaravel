@@ -1,0 +1,1 @@
+<script src="{{$config['site']['cdnurl']}}/assets/js/require{{$config['app_debug']?'':'.min'}}.js" data-main="{{$config['site']['cdnurl']}}/assets/js/require-backend{{$config['app_debug']?'':'.min'}}.js?v={{$config['site']['version']}}"></script>

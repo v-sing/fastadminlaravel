@@ -1,0 +1,57 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>jquery图片相册插件</title>
+
+<link rel="stylesheet" href="css/DB_gallery.css" type="text/css" />
+
+<script type="text/javascript" src="js/jquery-1.7.1.min.js"></script>
+<script type="text/javascript" src="js/jquery.DB_gallery.js"></script>
+
+</head>
+<body>
+
+<div id="DB_gallery">
+
+	<div class="DB_imgSet">
+		<div class="DB_imgWin"><img src="/assets/img/img1.jpg" alt=""/></div>
+		<div class="DB_page"><span class="DB_current">0</span>-<span class="DB_total">0</span></div>
+		<div class="DB_prevBtn"><img src="/assets/img/prev_off.png" alt="jquery相册"/></div>
+		<div class="DB_nextBtn"><img src="/assets/img/next_off.png" alt="图片相册"/></div>
+	</div>
+	
+	<div class="DB_thumSet" style="display: none">
+		<ul class="DB_thumMove" >
+			<li><a href="/assets/img/img1.jpg"><img src="/assets/img/thum1.jpg" alt="图片相册"/></a></li>
+			<li><a href="/assets/img/img2.jpg"><img src="/assets/img/thum2.jpg" alt="jquery相册"/></a></li>
+			<li><a href="/assets/img/img3.jpg"><img src="/assets/img/thum3.jpg" alt="图片相册"/></a></li>
+			<li><a href="/assets/img/img4.jpg"><img src="/assets/img/thum4.jpg" alt="jquery相册"/></a></li>
+			<li><a href="/assets/img/img5.jpg"><img src="/assets/img/thum5.jpg" alt="图片相册"/></a></li>
+			<li><a href="/assets/img/img6.jpg"><img src="/assets/img/thum6.jpg" alt="图片相册"/></a></li>
+			<li><a href="/assets/img/img1.jpg"><img src="/assets/img/thum1.jpg" alt="jquery相册"/></a></li>
+			<li><a href="/assets/img/img2.jpg"><img src="/assets/img/thum2.jpg" alt=""/></a></li>
+			<li><a href="/assets/img/img3.jpg"><img src="/assets/img/thum3.jpg" alt=""/></a></li>
+			<li><a href="/assets/img/img4.jpg"><img src="/assets/img/thum4.jpg" alt=""/></a></li>
+			<li><a href="/assets/img/img5.jpg"><img src="/assets/img/thum5.jpg" alt="网页特效"/></a></li>
+			<li><a href="/assets/img/img6.jpg"><img src="/assets/img/thum6.jpg" alt=""/></a></li>
+		</ul>
+		<div class="DB_thumLine"></div>
+		<div class="DB_prevPageBtn"><img src="/assets/img/prev_page.png" alt="上一页"/></div>
+		<div class="DB_nextPageBtn"><img src="/assets/img/next_page.png" alt="下一页"/></div>
+	</div>
+	
+</div><!--DB_gallery end-->
+
+<script type="text/javascript">
+$('#DB_gallery').DB_gallery({
+	thumWidth:110,            
+	thumGap:8,                
+	thumMoveStep:4,           
+	moveSpeed:300,            
+	fadeSpeed:500            
+});
+</script>
+
+</body>
+</html>

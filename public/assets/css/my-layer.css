@@ -1,0 +1,20 @@
+.layer-mobile {
+    width: 375px !important;
+    height: 667px !important;
+    background-color: transparent;/*背景透明*/
+    box-shadow: 0 0 0 rgba(0,0,0,0);
+    background: url("../img/iphone_7.png");
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    padding-top: 86px;
+    padding-left: 27px;
+    padding-right: 26px;
+    overflow:hidden;
+
+}
+.layer-mobile iframe{
+    height: 498px !important;
+    overflow-y:hidden;
+    overflow-y:auto;;
+
+}
