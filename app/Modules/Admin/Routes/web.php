@@ -27,4 +27,8 @@ Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function () {
     Route::get('/general/profile', 'ProfileController@index')->name('profile.index');
     Route::get('/profile/index', 'ProfileController@index')->name('profile.index');
     Route::post('/profile/update', 'ProfileController@update')->name('profile.update');
+    Route::get('/general/config', 'GeneralController@config')->name('general.config');
+    Route::post('/general/config/check', 'GeneralController@check')->name('general.check');
+    Route::post('/general/config/add', 'GeneralController@add')->name('general.add');
+    Route::post('/general/config/edit', 'GeneralController@edit')->name('general.edit');
 });

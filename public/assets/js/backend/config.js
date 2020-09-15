@@ -52,8 +52,12 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form'], function ($, undefin
 
             //不可见的元素不验证
             $("form#add-form").data("validator-options", {ignore: ':hidden'});
-            Form.api.bindevent($("form#add-form"), null, function (ret) {
+            Form.api.bindevent($("form#add-form"), function (ret) {
                 console.log(ret)
+                return false;
+            }, function (ret) {
+                console.log(ret)
+                return false;
                 // location.reload();
             });
 

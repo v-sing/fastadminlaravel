@@ -54,11 +54,20 @@ class ConfigRepositories
                 $content = [];
                 if ($key == $item->crux_group) {
                     if ($item->content) {
-                        $array = explode("\n", trim($item->content));
-                        foreach ($array as $item1) {
-                            list($contentKey, $contentValue) = explode('|', $item1);
-                            $content[] = ['key' => $contentKey, 'value' => $contentValue];
+                        switch ($item->type) {
+                            case "select":
+                            case "selects":
+                                $content = json_decode($item->content, true);
+                                break;
+                            case "array":
+                                $array = explode("\n", trim($item->content));
+                                foreach ($array as $item1) {
+                                    list($contentKey, $contentValue) = explode('|', $item1);
+                                    $content[] = ['key' => $contentKey, 'value' => $contentValue];
+                                }
+                                break;
                         }
+
                     } else {
                         $content = [];
                     }
@@ -179,14 +188,21 @@ class ConfigRepositories
             ],
 
             'site'           => [
-                'name'      => 'FastAdmin',
-                'cdnurl'    => '',
-                'version'   => '1.0.5',
-                'timezone'  => 'Asia/Shanghai',
-                'languages' => [
+                'name'        => 'FastAdmin',
+                'cdnurl'      => '',
+                'version'     => '1.0.5',
+                'timezone'    => 'Asia/Shanghai',
+                'languages'   => [
                     'backend'  => 'zh-cn',
                     'frontend' => 'zh-cn'
                 ],
+                'configgroup' => [
+                    "basic"      => 'Basic',
+                    "email"      => "Email",
+                    "dictionary" => "Dictionary",
+                    "user"       => "User",
+                    "example"    => "Example"
+                ]
 
             ],
             'upload'         => [
@@ -198,10 +214,10 @@ class ConfigRepositories
                 'multipart' => [],
                 'multiple'  => false
             ],
-            'modulename'     => trim($route['module'],'/'),
+            'modulename'     => trim($route['module'], '/'),
             'controllername' => $route['controller'],
             'actionname'     => $route['action'],
-            'jsname'         => 'backend/'.$route['controller'],
+            'jsname'         => 'backend/' . $route['controller'],
             'app_debug'      => 'ajax/upload',
             'moduleurl'      => $route['module']
         ];

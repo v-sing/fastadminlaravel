@@ -25,7 +25,7 @@ class BackendController
                 'multiplenav'      => true,
                 'lang_switch_on'   => true,
                 'cdnurl'           => '',
-                'api_url'             => 'https://api.fastadmin.net',
+                'api_url'          => 'https://api.fastadmin.net',
             ],
 
             'site'           => [
@@ -39,8 +39,14 @@ class BackendController
                 ],
                 'Languagetypes' => [
                     'en' => 'en'
+                ],
+                'configgroup'   => [
+                    "basic"      => 'Basic',
+                    "email"      => "Email",
+                    "dictionary" => "Dictionary",
+                    "user"       => "User",
+                    "example"    => "Example"
                 ]
-
             ],
             'upload'         => [
                 'cdnurl'    => '',

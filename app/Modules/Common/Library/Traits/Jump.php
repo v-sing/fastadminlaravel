@@ -12,6 +12,7 @@ namespace App\Modules\Common\Library\Traits;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\View;
 
 Trait Jump
@@ -138,9 +139,25 @@ Trait Jump
 
     }
 
-    protected function  json($data)
+    protected function json($data)
     {
         $response = response()->json($data);
         throw  new  HttpResponseException($response);
+    }
+
+    protected function failedValidation($validator)
+    {
+        $error = $validator->errors()->first();
+
+    }
+
+    protected function Validator($data, array $rules,
+                                 array $messages = [], array $customAttributes = [])
+    {
+
+        $validator = Validator::make($data, $rules, $messages, $customAttributes);
+        if ($validator->fails()) {
+            $this->error($validator->errors()->first());
+        }
     }
 }

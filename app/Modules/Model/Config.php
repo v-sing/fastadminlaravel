@@ -40,5 +40,122 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Config extends Model
 {
-    //
+    protected $casts = [
+        'created_at' => 'datetime:Y-m-d H:i:s',
+        'updated_at' => 'datetime:Y-m-d H:i:s',
+    ];
+    /**
+     * 读取分类分组列表
+     * @return array
+     */
+    public static function getGroupList()
+    {
+        $groupList = config('site.configgroup');
+        foreach ($groupList as $k => &$v) {
+            $v = lang($v);
+        }
+        return $groupList;
+    }
+
+    public static function getTypeList()
+    {
+        return $typeList = [
+            'string'        => '字符',
+            'text'          => '文本',
+            'bool'          => '布尔',
+            'date'          => '日期',
+            'time'          => '时间',
+            'datetime'      => '日期时间',
+            'daterange'     => '日期范围',
+            'timerange'     => '时间范围',
+            'datetimerange' => '日期时间范围',
+            'file'          => '文件',
+            'files'         => '多文件',
+            'image'         => '图片',
+            'images'        => '多图片',
+            'array'         => '数组',
+            'select'        => '下拉框',
+            'selects'       => '下拉多选框',
+            'checkbox'      => '复选框',
+            'radio'         => '单选框',
+            'sign'          => '密码框',
+        ];
+    }
+
+    public static function getArrayData($data)
+    {
+        if (!isset($data['crux_value'])) {
+            $result = [];
+            foreach ($data as $index => $datum) {
+                $result['field'][$index]      = $datum['key'];
+                $result['crux_value'][$index] = $datum['crux_value'];
+            }
+            $data = $result;
+        }
+        $fieldarr = $valuearr = [];
+        $field    = isset($data['field']) ? $data['field'] : (isset($data['key']) ? $data['key'] : []);
+        $value    = isset($data['crux_value']) ? $data['crux_value'] : [];
+        foreach ($field as $m => $n) {
+            if ($n != '') {
+                $fieldarr[] = $field[$m];
+                $valuearr[] = $value[$m];
+            }
+        }
+        return $fieldarr ? array_combine($fieldarr, $valuearr) : [];
+    }
+
+    /**
+     * 将字符串解析成键值数组
+     * @param string $text
+     * @return array
+     */
+    public static function decode($text, $split = "\r\n")
+    {
+        $content = explode($split, $text);
+        $arr     = [];
+        foreach ($content as $k => $v) {
+            if (stripos($v, "|") !== false) {
+                $item          = explode('|', $v);
+                $arr[$item[0]] = $item[1];
+            }
+        }
+        return $arr;
+    }
+
+    /**
+     * 将键值数组转换为字符串
+     * @param array $array
+     * @return string
+     */
+    public static function encode($array, $split = "\r\n")
+    {
+        $content = '';
+        if ($array && is_array($array)) {
+            $arr = [];
+            foreach ($array as $k => $v) {
+                $arr[] = "{$k}|{$v}";
+            }
+            $content = implode($split, $arr);
+        }
+        return $content;
+    }
+
+    /**
+     * 本地上传配置信息
+     * @return array
+     */
+    public static function upload()
+    {
+        $uploadcfg = config('upload');
+        $upload    = [
+            'cdnurl'    => $uploadcfg['cdnurl'],
+            'uploadurl' => $uploadcfg['uploadurl'],
+            'bucket'    => 'local',
+            'maxsize'   => $uploadcfg['maxsize'],
+            'mimetype'  => $uploadcfg['mimetype'],
+            'multipart' => [],
+            'multiple'  => $uploadcfg['multiple'],
+        ];
+        return $upload;
+    }
 }

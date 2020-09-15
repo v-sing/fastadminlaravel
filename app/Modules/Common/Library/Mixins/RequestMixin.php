@@ -11,9 +11,18 @@ namespace App\Modules\Common\Library\Mixins;
 
 use App\Modules\Admin\Http\Auth;
 
+/**
+ * 自定义Request
+ * Class RequestMixin
+ * @package App\Modules\Common\Library\Mixins
+ */
 class RequestMixin
 {
 
+    /**
+     * 判断是否为ajax请求
+     * @return \Closure
+     */
     public function isAjax()
     {
         return function () {
@@ -21,10 +30,14 @@ class RequestMixin
         };
     }
 
+    /**
+     * 初始化权限
+     * @return \Closure
+     */
     public function auth()
     {
         return function () {
-            return new Auth();
+            return Auth::instance();
         };
 
     }
