@@ -15,6 +15,7 @@
 Route::any('/login', 'LoginController@login')->prefix('admin')->name('login');
 Route::any('/logout', 'LoginController@logout')->prefix('admin')->name('logout');
 Route::any('/ajax/lang', 'AjaxController@lang')->prefix('admin')->name('lang');
+Route::any('/ajax/upload', 'AjaxController@upload')->prefix('admin')->name('upload');
 Route::any('/ajax/real', 'AjaxController@real')->prefix('admin')->name('real');
 
 Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function () {
@@ -28,7 +29,9 @@ Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function () {
     Route::get('/profile/index', 'ProfileController@index')->name('profile.index');
     Route::post('/profile/update', 'ProfileController@update')->name('profile.update');
     Route::get('/general/config', 'GeneralController@config')->name('general.config');
-    Route::post('/general/config/check', 'GeneralController@check')->name('general.check');
-    Route::post('/general/config/add', 'GeneralController@add')->name('general.add');
-    Route::post('/general/config/edit', 'GeneralController@edit')->name('general.edit');
+    Route::post('/general/config/check', 'GeneralController@check')->name('general.config.check');
+    Route::post('/general/config/add', 'GeneralController@add')->name('general.config.add');
+    Route::post('/general/config/edit', 'GeneralController@edit')->name('general.config.edit');
+    Route::get('/general/attachment', 'AattachmentController@index')->name('general.attachment');
+    Route::get('/general/attachment/index', 'AattachmentController@index')->name('general.attachment.index');
 });

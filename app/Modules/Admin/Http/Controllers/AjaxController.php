@@ -24,6 +24,11 @@ class AjaxController extends Controller
         return jsonp('define', $array);
     }
 
+    public function upload(Request $request)
+    {
+
+    }
+
     public function real()
     {
         $IdentityInformation = new IdentityInformation();

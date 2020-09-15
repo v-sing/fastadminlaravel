@@ -3,6 +3,7 @@
 namespace App\Modules\Model;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Redis;
 
 /**
  * App\Modules\Model\Config
@@ -44,6 +45,7 @@ class Config extends Model
         'created_at' => 'datetime:Y-m-d H:i:s',
         'updated_at' => 'datetime:Y-m-d H:i:s',
     ];
+
     /**
      * 读取分类分组列表
      * @return array
@@ -157,5 +159,61 @@ class Config extends Model
             'multiple'  => $uploadcfg['multiple'],
         ];
         return $upload;
+    }
+
+    /**
+     * 获取配置
+     * @return mixed
+     */
+    public static function cache()
+    {
+        $redis = Redis::exists('config:cache') ? json_decode(Redis::get('config:cache'), true) : [];
+        if (empty($redis)) {
+            $redis = self::all()->toArray();
+            Redis::set('config:cache', json_encode($redis));
+        }
+        $array = [];
+        foreach ($redis as $key => $item) {
+            $value = $item['crux_value'];
+            switch ($item['type']) {
+                case "selects":
+                    break;
+                case "array":
+                    $value = json_decode($item['crux_value'], true);
+                    break;
+            }
+            $array[$item['crux_group']][$item['name']] = $value;
+        }
+        $array ['configgroup']               = $array['dictionary']['configgroup'];
+        $route                               = getRealRoute();
+        $config['site']                      = $array['basic'];
+        $config['site']['Languagetypes']     = 'zh';
+        $config['site']['configgroup']       = $array ['configgroup'];
+        $config['admin']['login_captcha']    = isset($array['basic']['login_captcha']) ? $array['basic']['login_captcha'] : true;
+        $config['admin']['login_background'] = isset($array['basic']['login_background']) ? $array['basic']['login_background'] : '/assets/img/loginbg.jpg';
+        $config['admin']['multiplenav']      = isset($array['basic']['multiplenav']) ? $array['basic']['multiplenav'] : true;
+        $config['admin']['lang_switch_on']   = isset($array['basic']['lang_switch_on']) ? $array['basic']['lang_switch_on'] : true;
+        $config['admin']['api_url']          = isset($array['basic']['api_url']) ? $array['basic']['api_url'] : 'https://api.fastadmin.net';
+        $config['upload']['cdnurl']          = isset($array['upload']['cdnurl']) ? $array['upload']['cdnurl'] : '';
+        $config['upload']['uploadurl']       = isset($array['upload']['uploadurl']) ? $array['upload']['uploadurl'] : '/ajax/upload';
+        $config['upload']['bucket']          = isset($array['upload']['bucket']) ? $array['upload']['bucket'] : 'local';
+        $config['upload']['maxsize']         = isset($array['upload']['maxsize']) ? $array['upload']['maxsize'] : '10'*10240;
+        $config['upload']['mimetype']        = isset($array['upload']['mimetype']) ? $array['upload']['mimetype'] : 'jpg,png,bmp,jpeg,gif,zip,rar,xls,xlsx';
+        $config['upload']['multipart']       = isset($array['upload']['multipart']) ? $array['upload']['multipart'] : [];
+        $config['upload']['multiple']        = isset($array['upload']['multiple']) ? $array['upload']['multiple'] : false;
+        $config                              = array_merge($config, [
+            'modulename'     => trim($route['module'], '/'),
+            'controllername' => $route['controller'],
+            'actionname'     => $route['action'],
+            'jsname'         => 'backend/' . $route['controller'],
+            'app_debug'      => 'ajax/upload',
+            'moduleurl'      => $route['module'],
+            'language'       => config('app.local'),
+            'cdnurl'         => ''
+        ]);
+        unset($array['upload']);
+        $config                    = array_merge($config, $array);
+        $config['site']['version'] = time();
+        return $config;
     }
 }

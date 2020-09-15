@@ -10,6 +10,7 @@ namespace App\Modules\Common\Controllers;
 
 
 use App\Modules\Admin\Http\Auth;
+use App\Modules\Model\Config;
 use Illuminate\View\View;
 
 class BackendController
@@ -17,56 +18,10 @@ class BackendController
 
     public function viewInitData(View $view)
     {
-        $route  = getRealRoute();
-        $config = [
-            'admin' => [
-                'login_captcha'    => true,
-                'login_background' => '/assets/img/loginbg.jpg',
-                'multiplenav'      => true,
-                'lang_switch_on'   => true,
-                'cdnurl'           => '',
-                'api_url'          => 'https://api.fastadmin.net',
-            ],
 
-            'site'           => [
-                'name'          => 'FastAdmin',
-                'cdnurl'        => '',
-                'version'       => time(),//'1.0.9',
-                'timezone'      => 'Asia/Shanghai',
-                'languages'     => [
-                    'backend'  => 'en',
-                    'frontend' => 'zh-cn'
-                ],
-                'Languagetypes' => [
-                    'en' => 'en'
-                ],
-                'configgroup'   => [
-                    "basic"      => 'Basic',
-                    "email"      => "Email",
-                    "dictionary" => "Dictionary",
-                    "user"       => "User",
-                    "example"    => "Example"
-                ]
-            ],
-            'upload'         => [
-                'cdnurl'    => '',
-                'uploadurl' => "/ajax/upload",
-                'bucket'    => "local",
-                'maxsize'   => '10mb',
-                'mimetype'  => 'jpg,png,bmp,jpeg,gif,zip,rar,xls,xlsx',
-                'multipart' => [],
-                'multiple'  => false
-            ],
-            'modulename'     => $route['module'],
-            'controllername' => $route['controller'],
-            'actionname'     => $route['action'],
-            'jsname'         => 'backend/' . $route['controller'],
-            'app_debug'      => 'ajax/upload',
-            'moduleurl'      => '/' . trim($route['module'], '/'),
-            'language'       => config('app.local'),
-        ];
-        $view->with('config', $config);
-        $view->with('site', $config['site']);
+        $view->with('config', Config::cache());
+
+        $view->with('site', Config::cache()['site']);
         $view->with('fixedmenu', false);
         $view->with('referermenu', false);
         $view->with('navlist', '');

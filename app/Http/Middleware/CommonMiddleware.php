@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use App\Modules\Common\Repositories\ConfigRepositories;
+use App\Modules\Model\Config;
 use Closure;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\URL;
@@ -18,8 +19,8 @@ class CommonMiddleware
      */
     public function handle($request, Closure $next)
     {
-         //设置全局变量
-        config((new ConfigRepositories())->config());
+        //设置全局变量
+        config(Config::cache());
         //设置模版
         view()->composer(
             '*',     //模板名

@@ -13,6 +13,7 @@ use App\Http\Controllers\Controller;
 use App\Modules\Model\Config;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Date;
+use Illuminate\Support\Facades\Redis;
 
 class GeneralController extends Controller
 {
@@ -50,7 +51,6 @@ class GeneralController extends Controller
             'typeList'  => Config::getTypeList(),
             'groupList' => Config::getGroupList()
         ];
-//        dump($assign);exit;
         $this->assign($assign);
         return $this->view();
     }
@@ -78,6 +78,8 @@ class GeneralController extends Controller
                 $config = new Config();
                 if ($config->insert($params)) {
                     try {
+                        Redis::del('config:cache');
+                        Config::cache();
                     } catch (\Exception $e) {
                         $this->error($e->getMessage());
                     }
@@ -111,6 +113,8 @@ class GeneralController extends Controller
             }
             Config::updateBatch($configList);
             try {
+                Redis::del('config:cache');
+                Config::cache();
             } catch (Exception $e) {
                 $this->error($e->getMessage());
             }

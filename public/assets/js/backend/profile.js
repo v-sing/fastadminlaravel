@@ -43,7 +43,7 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form', 'upload'], function (
                 $(".profile-user-img").prop("src", url);
                 Toastr.success("上传成功！");
             });
-            
+            console.log(Config.upload.uploadurl);
             // 给表单绑定事件
             Form.api.bindevent($("#update-form"), function () {
                 $("input[name='row[password]']").val('');

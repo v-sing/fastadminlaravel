@@ -59,7 +59,7 @@
                         <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown"><i
                                     class="fa fa-language"></i></a>
                         <ul class="dropdown-menu">
-                            @foreach($site['Languagetypes'] as $k=> $v)
+                            @foreach($site['languages'] as $k=> $v)
                                 <li class="{{$config['language']==$v?'active':''}}">
                                     <a href="javascript:void(0);" class="lang" data-id="{{$v}}">{{lang($k)}}</a>
                                 </li>

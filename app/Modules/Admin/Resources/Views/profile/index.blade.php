@@ -49,9 +49,9 @@
                     <div class="box-body box-profile">
 
                         <div class="profile-avatar-container">
-                            <img class="profile-user-img img-responsive img-circle plupload" src="{{get_storage_image($admin['avatar'])}}" alt="" onerror="{{get_storage_image($config['admin']['cdnurl'])}}">
+                            <img class="profile-user-img img-responsive img-circle plupload" src="{{get_storage_image($admin['avatar'])}}" alt="" onerror="{{get_storage_image($config['site']['cdnurl'])}}">
                             <div class="profile-avatar-text img-circle">{{lang('Click to edit')}}</div>
-                            <button id="plupload-avatar" class="plupload" data-input-id="c-avatar"><i class="fa fa-upload"></i> {{lang('Upload')}}</button>
+                            <button id="plupload-avatar" type="button" class="plupload" data-input-id="c-avatar"><i class="fa fa-upload"></i> {{lang('Upload')}}</button>
                         </div>
 
                         <h3 class="profile-username text-center">{{$admin['username']}}</h3>
