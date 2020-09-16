@@ -11,7 +11,6 @@ namespace App\Modules\Admin\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Modules\Model\Attachment;
-use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\Request;
 
 class AttachmentController extends Controller
@@ -53,9 +52,8 @@ class AttachmentController extends Controller
                 $v['fullurl'] = $v['url'];
             }
             unset($v);
-            $result   = array("total" => $total, "rows" => $list);
-            $response = response()->json($result);
-            throw  new  HttpResponseException($response);
+            $result = array("total" => $total, "rows" => $list);
+            $this->ajaxReturn($result);
 
         } else {
             return $this->view();

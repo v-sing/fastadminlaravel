@@ -1,15 +1,15 @@
 define(['jquery', 'bootstrap', 'backend', 'table', 'form'], function ($, undefined, Backend, Table, Form) {
 
     var Controller = {
-        index: function () {
+        adminindex: function () {
             // 初始化表格参数配置
             Table.api.init({
                 extend: {
-                    index_url: 'admin/index',
-                    add_url: 'admin/add',
-                    edit_url: 'admin/edit',
-                    del_url: 'admin/del',
-                    multi_url: 'admin/multi',
+                    index_url: 'auth/admin/index',
+                    add_url: 'auth/admin/add',
+                    edit_url: 'auth/admin/edit',
+                    del_url: 'auth/admin/del',
+                    multi_url: 'auth/admin/multi',
                 }
             });
 
@@ -30,7 +30,7 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form'], function ($, undefin
                 columns: [
                     [
                         {field: 'state', checkbox: true, },
-                        {field: 'id', title: 'ID',operate:'IN'},
+                        {field: 'id', title: 'ID'},
                         {field: 'username', title: __('Username')},
                         {field: 'nickname', title: __('Nickname')},
                         {field: 'groups_text', title: __('Group'), operate:false, formatter: Table.api.formatter.label},
@@ -55,39 +55,6 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form'], function ($, undefin
         },
         edit: function () {
             Form.api.bindevent($("form[role=form]"));
-        },
-        logon:function () {
-            var lastlogin = localStorage.getItem("lastlogin");
-            if (lastlogin) {
-                lastlogin = JSON.parse(lastlogin);
-                if (typeof lastlogin.avatar != 'undefined') {
-                    $("#profile-img").attr("src", Backend.api.cdnurl(lastlogin.avatar));
-                    $("#profile-name").val(lastlogin.username);
-                }
-            }
-            //让错误提示框居中
-            Fast.config.toastr.positionClass = "toast-top-center";
-
-            //本地验证未通过时提示
-            $("#login-form").data("validator-options", {
-                invalid: function (form, errors) {
-                    $.each(errors, function (i, j) {
-                        Toastr.error(j);
-                    });
-                },
-                target: '#errtips'
-            });
-
-            //为表单绑定事件
-
-            Form.api.bindevent($("#login-form"), function (data) {
-                localStorage.setItem("lastlogin", JSON.stringify({
-                    id: data.id,
-                    username: data.username,
-                    avatar: data.avatar
-                }));
-                location.href = Backend.api.fixurl(data.url);
-            });
         }
     };
     return Controller;

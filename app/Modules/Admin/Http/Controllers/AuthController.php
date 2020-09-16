@@ -18,9 +18,12 @@ class AuthController extends Controller
     public function adminIndex(Request $request)
     {
 
+        if ($request->isAjax()) {
+            $this->ajaxReturn(['total' => 0, 'rows' => []]);
+        }
 
 
-        $this->view();
+        return $this->view();
     }
 
 

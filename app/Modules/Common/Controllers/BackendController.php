@@ -26,6 +26,7 @@ class BackendController
         $view->with('referermenu', false);
         $view->with('navlist', '');
         $auth = new Auth();
+        $view->with('auth',$auth);
         if ($auth->isLogin()) {
             $view->with('admin', $auth->getUserInfo());
         }

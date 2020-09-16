@@ -375,4 +375,14 @@ Trait Jump
 
         return [$where, $sort, $order, $offset, $limit];
     }
+
+    /**
+     * ajax返回值
+     * @param $data
+     */
+    public function ajaxReturn($data)
+    {
+        $response = response()->json($data);
+        throw  new  HttpResponseException($response);
+    }
 }
