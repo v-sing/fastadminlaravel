@@ -82,7 +82,7 @@
             <div class="well">
                 <div class="login-form">
                     <img id="profile-img" class="profile-img-card"
-                         src="{{get_storage_image('/assets/img/avatar.png') }}"/>
+                         src="/assets/img/avatar.png"/>
                     <p id="profile-name" class="profile-name-card"></p>
                     <form action="" method="post" id="login-form">
                         <div id="errtips" class="hide"></div>
