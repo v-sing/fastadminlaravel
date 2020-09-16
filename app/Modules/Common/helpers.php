@@ -29,22 +29,6 @@ if (!function_exists('lang')) {
 
 }
 
-if (!function_exists('get_storage_image')) {
-    /**
-     *
-     * @param string $url
-     * @param string $storage
-     * @param string $mime_type
-     * @return string
-     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
-     */
-    function get_storage_image($url = '', $storage = 'local', $mime_type = 'image/png')
-    {
-
-        return $url;
-    }
-}
-
 
 if (!function_exists('jsonp')) {
     /**

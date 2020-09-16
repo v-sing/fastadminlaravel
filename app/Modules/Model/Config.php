@@ -194,13 +194,16 @@ class Config extends Model
         $config['admin']['multiplenav']      = isset($array['basic']['multiplenav']) ? $array['basic']['multiplenav'] : true;
         $config['admin']['lang_switch_on']   = isset($array['basic']['lang_switch_on']) ? $array['basic']['lang_switch_on'] : true;
         $config['admin']['api_url']          = isset($array['basic']['api_url']) ? $array['basic']['api_url'] : 'https://api.fastadmin.net';
+        $config['admin']['api_url']          = isset($array['basic']['api_url']) ? $array['basic']['api_url'] : 'https://api.fastadmin.net';
         $config['upload']['cdnurl']          = isset($array['upload']['cdnurl']) ? $array['upload']['cdnurl'] : '';
         $config['upload']['uploadurl']       = isset($array['upload']['uploadurl']) ? $array['upload']['uploadurl'] : '/ajax/upload';
         $config['upload']['bucket']          = isset($array['upload']['bucket']) ? $array['upload']['bucket'] : 'local';
-        $config['upload']['maxsize']         = isset($array['upload']['maxsize']) ? $array['upload']['maxsize'] : '10'*10240;
+        $config['upload']['maxsize']         = isset($array['upload']['maxsize']) ? $array['upload']['maxsize'] : '10' * 10240;
         $config['upload']['mimetype']        = isset($array['upload']['mimetype']) ? $array['upload']['mimetype'] : 'jpg,png,bmp,jpeg,gif,zip,rar,xls,xlsx';
         $config['upload']['multipart']       = isset($array['upload']['multipart']) ? $array['upload']['multipart'] : [];
         $config['upload']['multiple']        = isset($array['upload']['multiple']) ? $array['upload']['multiple'] : false;
+        $config['upload']['savekey']         = isset($array['upload']['savekey']) ? $array['upload']['savekey'] : '/uploads/{year}{mon}{day}/{filemd5}{.suffix}';
+        $config['upload']['disks']           = isset($array['upload']['disks']) ? $array['upload']['disks'] : 'public';
         $config                              = array_merge($config, [
             'modulename'     => trim($route['module'], '/'),
             'controllername' => $route['controller'],
@@ -208,12 +211,13 @@ class Config extends Model
             'jsname'         => 'backend/' . $route['controller'],
             'app_debug'      => 'ajax/upload',
             'moduleurl'      => $route['module'],
-            'language'       => config('app.local'),
+            'language'       => 'zh-CN',
             'cdnurl'         => ''
         ]);
         unset($array['upload']);
         $config                    = array_merge($config, $array);
         $config['site']['version'] = time();
+        $config['site']['avatar']  = '/assets/img/avatar.png';
         return $config;
     }
 }

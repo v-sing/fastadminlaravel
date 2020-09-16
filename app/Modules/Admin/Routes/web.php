@@ -15,9 +15,8 @@
 Route::any('/login', 'LoginController@login')->prefix('admin')->name('login');
 Route::any('/logout', 'LoginController@logout')->prefix('admin')->name('logout');
 Route::any('/ajax/lang', 'AjaxController@lang')->prefix('admin')->name('lang');
-Route::any('/ajax/upload', 'AjaxController@upload')->prefix('admin')->name('upload');
+Route::any('/ajax/upload', 'AjaxController@upload')->name('upload');
 Route::any('/ajax/real', 'AjaxController@real')->prefix('admin')->name('real');
-
 Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function () {
     Route::get('/', function () {
         dd('This is the Admin module index page. Build something great!');
@@ -32,6 +31,6 @@ Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function () {
     Route::post('/general/config/check', 'GeneralController@check')->name('general.config.check');
     Route::post('/general/config/add', 'GeneralController@add')->name('general.config.add');
     Route::post('/general/config/edit', 'GeneralController@edit')->name('general.config.edit');
-    Route::get('/general/attachment', 'AattachmentController@index')->name('general.attachment');
-    Route::get('/general/attachment/index', 'AattachmentController@index')->name('general.attachment.index');
+    Route::get('/general/attachment', 'AttachmentController@index')->name('general.attachment');
+    Route::get('/general/attachment/index', 'AttachmentController@index')->name('general.attachment.index');
 });

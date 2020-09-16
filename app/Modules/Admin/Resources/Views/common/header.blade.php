@@ -76,14 +76,14 @@
                 <!-- 账号信息下拉框 -->
                 <li class="dropdown user user-menu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        <img src="{{get_storage_image($admin['avatar'])}}" onerror="{{$site['cdnurl']}}"
+                        <img src="{{$admin['avatar']}}" onerror="{{$site['avatar']}}"
                              class="user-image" alt="{{$admin['nickname']}}">
                         <span class="hidden-xs">{{$admin['nickname']}}</span>
                     </a>
                     <ul class="dropdown-menu">
                         <!-- User image -->
                         <li class="user-header">
-                            <img src="{{get_storage_image($admin['avatar'])}}" onerror="{{$site['cdnurl']}}"
+                            <img src="{($admin['avatar']}}" onerror="{{$site['avatar']}}"
                                  class="img-circle" alt="">
                             <p>
                                 {{$admin['nickname']}}

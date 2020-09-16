@@ -44,14 +44,17 @@
                 {{lang('Profile')}}
             </div>
             <div class="panel-body">
-                <form id="update-form" role="form" data-toggle="validator" method="POST" action="{{url('admin/profile/update')}}">
+                <form id="update-form" role="form" data-toggle="validator" method="POST"
+                      action="{{url('admin/profile/update')}}">
                     <input type="hidden" id="c-avatar" name="row[avatar]" value="{{$admin['avatar']}}"/>
                     <div class="box-body box-profile">
 
                         <div class="profile-avatar-container">
-                            <img class="profile-user-img img-responsive img-circle plupload" src="{{get_storage_image($admin['avatar'])}}" alt="" onerror="{{get_storage_image($config['site']['cdnurl'])}}">
+                            <img class="profile-user-img img-responsive img-circle plupload" src="{{$admin['avatar']}}"
+                                 alt="" onerror="{{$config['site']['avatar']}}">
                             <div class="profile-avatar-text img-circle">{{lang('Click to edit')}}</div>
-                            <button id="plupload-avatar" type="button" class="plupload" data-input-id="c-avatar"><i class="fa fa-upload"></i> {{lang('Upload')}}</button>
+                            <button id="plupload-avatar" type="button" class="plupload" data-input-id="c-avatar"><i
+                                        class="fa fa-upload"></i> {{lang('Upload')}}</button>
                         </div>
 
                         <h3 class="profile-username text-center">{{$admin['username']}}</h3>
@@ -59,19 +62,24 @@
                         <p class="text-muted text-center">{{$admin['email']}}</p>
                         <div class="form-group">
                             <label for="username" class="control-label">{{lang(('Username'))}}:</label>
-                            <input type="text" class="form-control" id="username" name="row[username]" value="{{$admin['username']}}" disabled/>
+                            <input type="text" class="form-control" id="username" name="row[username]"
+                                   value="{{$admin['username']}}" disabled/>
                         </div>
                         <div class="form-group">
                             <label for="email" class="control-label">{{lang('Email')}}:</label>
-                            <input type="text" class="form-control" id="email" name="row[email]" value="{{$admin['email']}}" data-rule="required;email"/>
+                            <input type="text" class="form-control" id="email" name="row[email]"
+                                   value="{{$admin['email']}}" data-rule="required;email"/>
                         </div>
                         <div class="form-group">
                             <label for="nickname" class="control-label">{{lang('Nickname')}}:</label>
-                            <input type="text" class="form-control" id="nickname" name="row[nickname]" value="{{$admin['nickname']}}" data-rule="required"/>
+                            <input type="text" class="form-control" id="nickname" name="row[nickname]"
+                                   value="{{$admin['nickname']}}" data-rule="required"/>
                         </div>
                         <div class="form-group">
                             <label for="password" class="control-label">{{lang('Password')}}:</label>
-                            <input type="password" class="form-control" id="password" placeholder="{{lang('password change')}}" autocomplete="new-password" name="row[password]" value="" data-rule="password"/>
+                            <input type="password" class="form-control" id="password"
+                                   placeholder="{{lang('password change')}}" autocomplete="new-password"
+                                   name="row[password]" value="" data-rule="password"/>
                         </div>
                         <div class="form-group">
                             <button type="submit" class="btn btn-success">{{lang('Submit')}}</button>
@@ -88,7 +96,8 @@
         <div class="panel panel-default panel-intro panel-nav">
             <div class="panel-heading">
                 <ul class="nav nav-tabs">
-                    <li class="active"><a href="#one" data-toggle="tab"><i class="fa fa-list"></i> {{lang('Admin log')}}</a></li>
+                    <li class="active"><a href="#one" data-toggle="tab"><i class="fa fa-list"></i> {{lang('Admin log')}}
+                        </a></li>
                 </ul>
             </div>
             <div class="panel-body">
