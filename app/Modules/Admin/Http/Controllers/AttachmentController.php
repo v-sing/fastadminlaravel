@@ -22,7 +22,7 @@ class AttachmentController extends Controller
     {
         $mimetypeQuery = [];
         if ($request->isAjax()) {
-            $filter    = input('filter');
+            $filter    = $request->get('filter');
             $filterArr = (array)json_decode($filter, TRUE);
             if (isset($filterArr['mimetype']) && stripos($filterArr['mimetype'], ',') !== false) {
                 $request->merge(['filter' => json_encode(array_merge($filterArr, ['mimetype' => '']))]);
@@ -33,7 +33,7 @@ class AttachmentController extends Controller
                     }
                 };
             }
-            list($where, $sort, $order, $offset, $limit) = $this->buildparams();
+            list($where, $sort, $order, $offset, $limit) = $this->buildparams(new Attachment());
             $total = Attachment::
             where($mimetypeQuery)
                 ->where($where)

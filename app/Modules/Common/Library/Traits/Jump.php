@@ -30,6 +30,9 @@ Trait Jump
 
     protected $layout = 'admin::layouts.site';
 
+    protected $searchFields = [];
+    protected $relationSearch = [];
+
     /**
      * @param string $msg
      * @param null $url
@@ -197,18 +200,18 @@ Trait Jump
      * @param boolean $model 当前使用的主表model
      * @return array
      */
-    protected function buildparams($searchfields = null, $relationSearch = null, $model = null)
+    protected function buildparams($model, $searchfields = null, $relationSearch = null)
     {
         $model          = is_null($model) ? $this->model : $model;
         $searchfields   = is_null($searchfields) ? $this->searchFields : $searchfields;
         $relationSearch = is_null($relationSearch) ? $this->relationSearch : $relationSearch;
-        $search         = input("search", '');
-        $filter         = input("filter", '');
-        $op             = input("op", '', 'trim');
-        $sort           = input("sort", "id");
-        $order          = input("order", "DESC");
-        $offset         = input("offset", 0);
-        $limit          = input("limit", 0);
+        $search         = \request()->get("search", '');
+        $filter         = \request()->get("filter", '');
+        $op             = \request()->get("op", '', 'trim');
+        $sort           = \request()->get("sort", "id");
+        $order          = \request()->get("order", "DESC");
+        $offset         = \request()->get("offset", 0);
+        $limit          = \request()->get("limit", 0);
         $filter         = (array)json_decode($filter, TRUE);
         $op             = (array)json_decode($op, TRUE);
         $filter         = $filter ? $filter : [];

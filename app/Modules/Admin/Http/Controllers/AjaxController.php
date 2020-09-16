@@ -69,8 +69,8 @@ class AjaxController extends Controller
             ];
             $savekey    = $upload['savekey'];
             $savekey    = str_replace(array_keys($replaceArr), array_values($replaceArr), $savekey);
-            if (Attachment::where(['url' => '/storage'.$savekey])->count() > 0) {
-                $this->success('Upload successful',null, ['url' => '/storage'.$savekey, 'fullurl' => '/storage'.$savekey]);
+            if (Attachment::where(['url' => '/storage' . $savekey])->count() > 0) {
+                $this->success('Upload successful', null, ['url' => '/storage' . $savekey, 'fullurl' => '/storage' . $savekey]);
             }
             $bool = Storage::disk(config('upload.disks'))->put($savekey, file_get_contents($path));
             if ($bool) {
@@ -89,8 +89,10 @@ class AjaxController extends Controller
                     'imagetype'   => $ext,
                     'imageframes' => 0,
                     'mimetype'    => $mimetype,
-                    'url'         => '/storage'.$savekey,
+                    'url'         => '/storage' . $savekey,
                     'uploadtime'  => date('YmdHis'),
+                    'created_at'  => date('YmdHis'),
+                    'updated_at'  => date('YmdHis'),
                     'storage'     => config('upload.disks'),
                     'sha1'        => $fileCharater->isValid(),
                     'extparam'    => json_encode($request->all()),
@@ -99,7 +101,7 @@ class AjaxController extends Controller
                 $result     = $attachment->insert($params);
                 if ($result) {
                     $this->success('Upload successful', null,
-                        ['url' => '/storage'.$savekey, 'fullurl' => '/storage'.$savekey]);
+                        ['url' => '/storage' . $savekey, 'fullurl' => '/storage' . $savekey]);
                 } else {
                     $this->error();
                 }

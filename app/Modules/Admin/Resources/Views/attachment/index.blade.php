@@ -41,7 +41,7 @@
         <% var label = labelarr[item.id % 5]; %>
         <div class="thumbnail example">
             <span class="btn btn-<%=label%>">ID:<%=item.id%></span>
-            <img src="<%=item.fullurl%>" class="img-responsive" style="height:246px" alt="<%=item.url%>" >
+            <img src="<%=item.fullurl%>" onerror="this.src='/assets/img/png.png'" class="img-responsive" style="height:246px" alt="<%=item.url%>" >
             <div class="caption">
                 <h4  style="overflow: hidden;white-space: nowrap;text-overflow: ellipsis;"><%=item.url?item.url:'无'%></h4>
                 <p class="text-muted">{{lang('Mimetype')}}: <%=item.mimetype%> &nbsp;; {{lang('Storage')}} : <%=item.storage%></p>
