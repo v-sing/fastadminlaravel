@@ -21,8 +21,7 @@ class AuthController extends Controller
         if ($request->isAjax()) {
             $this->ajaxReturn(['total' => 0, 'rows' => []]);
         }
-
-
+        
         return $this->view();
     }
 
