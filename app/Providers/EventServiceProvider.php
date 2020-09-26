@@ -17,11 +17,7 @@ class EventServiceProvider extends ServiceProvider
     protected $listen = [
         Registered::class                          => [
             SendEmailVerificationNotification::class,
-        ],
-        'Illuminate\Database\Events\QueryExecuted' => [
-            'App\Listeners\QueryListener',
         ]
-
     ];
 
     /**
