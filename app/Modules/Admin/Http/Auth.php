@@ -153,7 +153,6 @@ class Auth extends BaseAuth
             return true;
         }
         $admin = Session::get('admin');
-
         if (!$admin) {
             return false;
         }
@@ -367,7 +366,7 @@ class Auth extends BaseAuth
         $colorArr  = ['red', 'green', 'yellow', 'blue', 'teal', 'orange', 'purple'];
         $colorNums = count($colorArr);
         $badgeList = [];
-        $module    =config('modulename');
+        $module    = config('modulename');
 //        dump($module);exit;
         // 生成菜单的badge
         foreach ($params as $k => $v) {
@@ -405,9 +404,9 @@ class Auth extends BaseAuth
                     continue;
                 }
             }
-            $v['icon']   = $v['icon'] . ' fa-fw';
+            $v['icon'] = $v['icon'] . ' fa-fw';
 
-            $v['url']    =  URL::asset( $module . '/' . $v['name']);
+            $v['url']    = URL::asset($module . '/' . $v['name']);
             $v['badge']  = isset($badgeList[$v['name']]) ? $badgeList[$v['name']] : '';
             $v['py']     = pinyin_abbr($v['title']);
             $v['pinyin'] = pinyin_permalink($v['title']);

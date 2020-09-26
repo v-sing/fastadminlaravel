@@ -43,4 +43,21 @@ use Illuminate\Database\Eloquent\Model;
 class Admin extends Model
 {
     //
+
+
+    public function a_to_c()
+    {
+        return $this->hasOne('', 'article_id', 'id');
+    }
+
+    public function a_to_c2()
+    {
+        return $this->belongsTo('App\Models\ClassificationArticles', 'id', 'article_id');
+    }
+
+    public function a_to_c3()
+    {
+        return $this->hasMany('App\Models\ClassificationArticles', 'article_id', 'id');
+    }
+
 }

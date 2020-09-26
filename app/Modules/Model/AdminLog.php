@@ -57,7 +57,7 @@ class AdminLog extends Model
         $username = $auth->isLogin() ? $auth->username : lang('Unknown');
         $content  = self::$content;
         if (!$content) {
-            $content = request()->param();
+            $content = request()->all();
             foreach ($content as $k => $v) {
                 if (is_string($v) && strlen($v) > 200 || stripos($k, 'password') !== false) {
                     unset($content[$k]);
@@ -73,7 +73,7 @@ class AdminLog extends Model
             }
             $title = implode(' ', $title);
         }
-        self::create([
+        $data = [
             'title'     => $title,
             'content'   => !is_scalar($content) ? json_encode($content) : $content,
             'url'       => substr(request()->url(), 0, 1500),
@@ -81,11 +81,28 @@ class AdminLog extends Model
             'username'  => $username,
             'useragent' => substr(request()->server('HTTP_USER_AGENT'), 0, 255),
             'ip'        => request()->ip()
-        ]);
+        ];
+//        foreach ($data as $field =>$value){
+//            $this->setAttribute($field, $value);
+//        }
+
+//        self::setAttribute('title', $title);
+//        self::setAttribute('title', $title);
+//        self::setAttribute('title', $title);
+        self::insert($data);
+//        self::create([
+//            'title'     => $title,
+//            'content'   => !is_scalar($content) ? json_encode($content) : $content,
+//            'url'       => substr(request()->url(), 0, 1500),
+//            'admin_id'  => $admin_id,
+//            'username'  => $username,
+//            'useragent' => substr(request()->server('HTTP_USER_AGENT'), 0, 255),
+//            'ip'        => request()->ip()
+//        ]);
     }
 
     public function admin()
     {
-        return $this->belongsTo(Admin::class, 'admin_id','id');
+        return $this->belongsTo(Admin::class, 'admin_id', 'id');
     }
 }

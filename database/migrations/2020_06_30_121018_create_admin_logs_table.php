@@ -17,6 +17,7 @@ class CreateAdminLogsTable extends Migration
             $table->id();
             $table->integer('admin_id', false)->nullable()->default(0)->comment('管理员ID');
             $table->string('username', 20)->nullable()->default('')->comment('管理员名字');
+            $table->string('useragent', 1500)->nullable()->default('')->comment('请求工具');
             $table->string('url', 1500)->nullable()->default('')->comment('操作页面');
             $table->string('title', 100)->nullable()->default('')->comment('日志标题');
             $table->text('content')->comment('内容');

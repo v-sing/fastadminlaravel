@@ -33,6 +33,6 @@ Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function () {
     Route::post('/general/config/edit', 'GeneralController@edit')->name('general.config.edit');
     Route::get('/general/attachment', 'AttachmentController@index')->name('general.attachment');
     Route::get('/general/attachment/index', 'AttachmentController@index')->name('general.attachment.index');
-    Route::get('/auth/admin', 'AuthController@adminIndex')->name('auth.admin');
-    Route::get('/auth/admin/index', 'AuthController@adminIndex')->name('auth.admin.index');
+    Route::get('/auth/admin', 'AdminController@index')->name('auth.admin');
+    Route::get('/auth/admin/index', 'AdminController@index')->name('auth.admin.index');
 });
