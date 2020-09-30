@@ -23,6 +23,7 @@ class AdminMiddleware
     public function handle($request, Closure $next)
     {
         $this->auth = Auth::instance();
+        $this->auth->getTitle();
         if (!$this->auth->isLogin()) {
             $url = Session::get('referer');
             $url = $url ? $url : $request->url();

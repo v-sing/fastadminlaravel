@@ -531,4 +531,13 @@ class Auth extends BaseAuth
     {
         return $uid = is_null($uid) ? $this->id = Session::get('admin.id') : $uid;
     }
+
+    public function getTitle()
+    {
+        dump($this->request->getUri());exit;
+        $info = AuthRule::where('name', '')->first();
+        if($info){
+
+        }
+    }
 }

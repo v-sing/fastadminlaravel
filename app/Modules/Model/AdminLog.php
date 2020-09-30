@@ -34,6 +34,11 @@ use Illuminate\Database\Eloquent\Model;
  */
 class AdminLog extends Model
 {
+
+    protected $casts = [
+        'created_at' => 'datetime:Y-m-d H:i:s',
+        'updated_at' => 'datetime:Y-m-d H:i:s',
+    ];
     //
     //自定义日志标题
     protected static $title = '';
@@ -80,7 +85,9 @@ class AdminLog extends Model
             'admin_id'  => $admin_id,
             'username'  => $username,
             'useragent' => substr(request()->server('HTTP_USER_AGENT'), 0, 255),
-            'ip'        => request()->ip()
+            'ip'        => request()->ip(),
+            'updated_at'=>date('Y-m-d H:i:s'),
+            'created_at'=>date('Y-m-d H:i:s')
         ];
 //        foreach ($data as $field =>$value){
 //            $this->setAttribute($field, $value);

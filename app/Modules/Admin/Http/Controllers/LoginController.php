@@ -11,6 +11,7 @@ namespace App\Modules\Admin\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Modules\Admin\Http\Auth;
+use App\Modules\Model\AdminLog;
 use Illuminate\Http\Request;
 
 class LoginController extends Controller
@@ -29,6 +30,7 @@ class LoginController extends Controller
             $this->success(trans('admin::login.You\'ve logged in, do not login again'), 'admin/index');
         }
         if ($request->isMethod('post')) {
+            AdminLog::setTitle('登录');
             $username  = $request->post('username');
             $password  = $request->post('password');
             $captcha   = $request->post('captcha');
