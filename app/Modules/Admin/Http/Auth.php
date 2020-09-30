@@ -11,6 +11,7 @@ namespace App\Modules\Admin\Http;
 use App\Modules\Common\Library\Auth as BaseAuth;
 
 use App\Modules\Model\AuthRule;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Session;
@@ -534,10 +535,9 @@ class Auth extends BaseAuth
 
     public function getTitle()
     {
-        dump($this->request->getUri());exit;
-        $info = AuthRule::where('name', '')->first();
-        if($info){
-
-        }
+        $path     = str_replace(config('modulename') . '/', '', \request()->path());
+        $ruleList = Cache::get("__MENU__");
+        $info     = array_combine(array_column($ruleList, 'name'), array_column($ruleList, 'title'));
+        return Arr::get($info, $path);
     }
 }

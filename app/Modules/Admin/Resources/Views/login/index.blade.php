@@ -86,7 +86,7 @@
                     <p id="profile-name" class="profile-name-card"></p>
                     <form action="" method="post" id="login-form">
                         <div id="errtips" class="hide"></div>
-                        <input type="hidden" name="_token" value="{{csrf_token()}}">
+                        {{ csrf_field() }}
                         <div class="input-group">
                             <div class="input-group-addon"><span class="glyphicon glyphicon-user"
                                                                  aria-hidden="true"></span></div>

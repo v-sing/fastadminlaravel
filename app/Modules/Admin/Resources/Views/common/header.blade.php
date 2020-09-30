@@ -83,7 +83,7 @@
                     <ul class="dropdown-menu">
                         <!-- User image -->
                         <li class="user-header">
-                            <img src="{($admin['avatar']}}" onerror="{{$site['avatar']}}"
+                            <img src="{{$admin['avatar']}}" onerror="{{$site['avatar']}}"
                                  class="img-circle" alt="">
                             <p>
                                 {{$admin['nickname']}}
@@ -107,7 +107,7 @@
                         <!-- Menu Footer-->
                         <li class="user-footer">
                             <div class="pull-left">
-                                <a href="{{url('admin/profile')}}" class="btn btn-primary addtabsit"><i
+                                <a href="{{url('admin/general/profile')}}" class="btn btn-primary addtabsit"><i
                                             class="fa fa-user"></i>
                                     {{lang('Profile')}}</a>
                             </div>

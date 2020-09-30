@@ -12,6 +12,7 @@ namespace App\Modules\Admin\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Modules\Common\Library\Random;
 use App\Modules\Model\Admin;
+use App\Modules\Model\AdminLog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
@@ -24,7 +25,19 @@ class ProfileController extends Controller
 
         if ($request->isAjax()) {
 
-            $this->json(["total" => 0, "rows" => []]);
+            list($where, $sort, $order, $offset, $limit) = $this->buildparams(AdminLog::class);
+            $mode  = AdminLog::query();
+            $total = $mode
+                ->where($where)
+                ->count();
+            $rows  = $mode
+                ->where($where)
+                ->offset($offset)
+                ->limit($limit)
+                ->orderBy($sort, $order)
+                ->get();
+
+            $this->json(["total" => $total, "rows" => $rows]);
         }
         return $this->view();
 
@@ -38,7 +51,7 @@ class ProfileController extends Controller
             $params = array_filter(array_intersect_key($params, array_flip(array('email', 'nickname', 'password', 'avatar'))));
             unset($v);
             if (isset($params['password'])) {
-                $params['salt']     = Random::alnum();
+                $params['salt'] = Random::alnum();
 
                 $params['password'] = encrypt($params['password'] . $params['salt']);
             }

@@ -10,6 +10,7 @@ namespace App\Modules\Common\Controllers;
 
 
 use App\Modules\Admin\Http\Auth;
+use App\Modules\Model\AdminLog;
 use App\Modules\Model\Config;
 use function GuzzleHttp\Psr7\rewind_body;
 use Illuminate\View\View;
@@ -26,8 +27,10 @@ class BackendController
         $view->with('fixedmenu', false);
         $view->with('referermenu', false);
         $view->with('navlist', '');
+        $view->with('title', request()->auth()->getTitle());
+        AdminLog::setTitle(lang(request()->auth()->getTitle()));
         $auth = new Auth();
-        $view->with('auth',$auth);
+        $view->with('auth', $auth);
         if ($auth->isLogin()) {
             $view->with('admin', $auth->getUserInfo());
         }

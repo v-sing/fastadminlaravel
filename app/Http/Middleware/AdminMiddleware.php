@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use App\Modules\Admin\Http\Auth;
 use App\Modules\Common\Library\Traits\Jump;
+use App\Modules\Model\AdminLog;
 use Closure;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\View;
@@ -23,7 +24,6 @@ class AdminMiddleware
     public function handle($request, Closure $next)
     {
         $this->auth = Auth::instance();
-        $this->auth->getTitle();
         if (!$this->auth->isLogin()) {
             $url = Session::get('referer');
             $url = $url ? $url : $request->url();
