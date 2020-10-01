@@ -12,7 +12,6 @@ namespace App\Modules\Common\Controllers;
 use App\Modules\Admin\Http\Auth;
 use App\Modules\Model\AdminLog;
 use App\Modules\Model\Config;
-use function GuzzleHttp\Psr7\rewind_body;
 use Illuminate\View\View;
 
 class BackendController

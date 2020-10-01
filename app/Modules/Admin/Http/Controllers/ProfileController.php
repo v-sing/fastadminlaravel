@@ -14,7 +14,6 @@ use App\Modules\Common\Library\Random;
 use App\Modules\Model\Admin;
 use App\Modules\Model\AdminLog;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 
 class ProfileController extends Controller
@@ -56,11 +55,11 @@ class ProfileController extends Controller
                 $params['password'] = encrypt($params['password'] . $params['salt']);
             }
             if ($params) {
-                $admin = Admin::where(['id' => $request->auth()->id])->first();
-                $admin->bind($params);
-                $admin->save();
+                $array = Session::get("admin");
+                Admin::where(['id' => $request->auth()->id])->update($params);
+                $array = array_merge($array, $params);
                 //因为个人资料面板读取的Session显示，修改自己资料后同时更新Session
-                Session::put("admin", $admin->toArray());
+                Session::put("admin", $array);
                 $this->success();
             }
             $this->error();

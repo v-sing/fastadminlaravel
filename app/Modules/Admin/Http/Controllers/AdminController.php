@@ -12,7 +12,6 @@ namespace App\Modules\Admin\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Modules\Common\Library\Tree;
 use App\Modules\Model\Admin;
-use App\Modules\Model\AdminLog;
 use App\Modules\Model\AuthGroup;
 use App\Modules\Model\AuthGroupAccess;
 use Illuminate\Http\Request;
@@ -54,8 +53,6 @@ class AdminController extends Controller
 
     public function index(Request $request)
     {
-//        dump(AdminLog::with(['admin'])->get());exit;
-
         $this->_initialize($request);
 
         if ($request->isAjax()) {

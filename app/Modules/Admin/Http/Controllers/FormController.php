@@ -13,8 +13,6 @@ use App\Http\Controllers\Controller;
 use FormBuilder\components\Validate;
 use LaravelFormBuilder\Form;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\URL;
-use PhpOffice\PhpSpreadsheet\Writer\Xls;
 
 class FormController extends Controller
 {
