@@ -4,6 +4,7 @@ namespace App\Modules\Model;
 
 use App\Modules\Admin\Http\Auth;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Log;
 
 /**
  * App\Modules\Model\AdminLog
@@ -35,10 +36,11 @@ use Illuminate\Database\Eloquent\Model;
 class AdminLog extends Model
 {
 
-    protected $casts = [
-        'created_at' => 'datetime:Y-m-d H:i:s',
-        'updated_at' => 'datetime:Y-m-d H:i:s',
-    ];
+    public function serializeDate(\DateTimeInterface $dateTime)
+    {
+        return $dateTime->format('Y-m-d H:i:s');
+    }
+
     //
     //自定义日志标题
     protected static $title = '';
@@ -89,23 +91,7 @@ class AdminLog extends Model
             'updated_at'=>date('Y-m-d H:i:s'),
             'created_at'=>date('Y-m-d H:i:s')
         ];
-//        foreach ($data as $field =>$value){
-//            $this->setAttribute($field, $value);
-//        }
-
-//        self::setAttribute('title', $title);
-//        self::setAttribute('title', $title);
-//        self::setAttribute('title', $title);
         self::insert($data);
-//        self::create([
-//            'title'     => $title,
-//            'content'   => !is_scalar($content) ? json_encode($content) : $content,
-//            'url'       => substr(request()->url(), 0, 1500),
-//            'admin_id'  => $admin_id,
-//            'username'  => $username,
-//            'useragent' => substr(request()->server('HTTP_USER_AGENT'), 0, 255),
-//            'ip'        => request()->ip()
-//        ]);
     }
 
     public function admin()

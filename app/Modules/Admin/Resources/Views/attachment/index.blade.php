@@ -45,7 +45,7 @@
             <div class="caption">
                 <h4  style="overflow: hidden;white-space: nowrap;text-overflow: ellipsis;"><%=item.url?item.url:'无'%></h4>
                 <p class="text-muted">{{lang('Mimetype')}}: <%=item.mimetype%> &nbsp;; {{lang('Storage')}} : <%=item.storage%></p>
-                <p class="text-muted">{{lang('Created_at')}}: <%=Moment(item.created_at*1000).format("YYYY-MM-DD HH:mm:ss")%></p>
+                <p class="text-muted">{{lang('Created_at')}}: <%=item.created_at%></p>
                 <p>
 
                     <!--如果需要响应编辑或删除事件，可以给元素添加 btn-edit或btn-del的类和data-id这个属性值-->

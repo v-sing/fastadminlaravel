@@ -20,11 +20,11 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form', 'jstree'], function (
             // 初始化表格参数配置
             Table.api.init({
                 extend: {
-                    "index_url": "group/index",
-                    "add_url": "group/add",
-                    "edit_url": "group/edit",
-                    "del_url": "group/del",
-                    "multi_url": "group/multi",
+                    "index_url": "auth/group/index",
+                    "add_url": "auth/group/add",
+                    "edit_url": "auth/group/edit",
+                    "del_url": "auth/group/del",
+                    "multi_url": "auth/group/multi",
                 }
             });
 

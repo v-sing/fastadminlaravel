@@ -9,6 +9,7 @@
 namespace App\Modules\Common\Library\Traits;
 
 
+use App\Modules\Model\Config;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\URL;
@@ -126,6 +127,7 @@ Trait Jump
     /**
      * @param $name
      * @param null $value
+     * @return bool
      */
     protected function assign($name, $value = null)
     {
@@ -134,6 +136,29 @@ Trait Jump
         } else {
             $this->assign[$name] = $value;
         }
+        return true;
+    }
+
+    protected function assignconfig($name, $value = null)
+    {
+        $config = Config::cache();
+        if (is_null($value) && is_array($name)) {
+            foreach ($name as $field => $item) {
+                if (isset($config[$field])) {
+                    $config[$field] = array_merge($config[$field], $item);
+                } else {
+                    $config = array_merge($config, [$field => $item]);
+                }
+            }
+        } else {
+            if (isset($config[$name])) {
+                $config[$name] = array_merge($config[$name], $value);
+            } else {
+                $config = array_merge($config, [$name => $value]);
+            }
+
+        }
+        $this->assign['config'] = $config;
         return true;
     }
 

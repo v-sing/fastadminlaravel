@@ -30,7 +30,6 @@ class AdminMiddleware
             $this->error(trans('admin::common.Please login first'), route('login', ['url' => urlencode($url)]));
         }
 
-        $modulename     = config('modulename');
         $controllername = config('controllername');
         $actionname     = config('actionname');
         $path           = $controllername . '/' . $actionname;
@@ -48,7 +47,6 @@ class AdminMiddleware
         // 定义是否AJAX请求
         !defined('IS_AJAX') && define('IS_AJAX', $request->isAjax());
         // 非选项卡时重定向
-        // dd(!isPost() && !IS_AJAX && !IS_ADDTABS && !IS_DIALOG && $request->input("ref") == 'addtabs');
         if (!IS_AJAX && !IS_ADDTABS && !IS_DIALOG && $request->input("ref") == 'addtabs') {
             $url = preg_replace_callback("/([\?|&]+)ref=addtabs(&?)/i", function ($matches) {
                 return $matches[2] == '&' ? $matches[1] : '';
