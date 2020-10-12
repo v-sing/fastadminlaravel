@@ -5,6 +5,7 @@ namespace App\Listeners;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Database\Events\QueryExecuted;
 use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Support\Facades\Log;
 
 class QueryListener
 {
@@ -27,5 +28,6 @@ class QueryListener
     public function handle(QueryExecuted $event)
     {
         //
+       Log::info( $event->sql);
     }
 }

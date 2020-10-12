@@ -17,6 +17,7 @@ use App\Modules\Model\AuthGroup;
 use App\Modules\Model\AuthGroupAccess;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use function Matrix\diagonal;
 
 class AdminController extends Controller
 {
@@ -68,12 +69,13 @@ class AdminController extends Controller
             $adminGroupName   = [];
             foreach ($authGroupList as $k => $v) {
                 if (isset($groupName[$v->group_id]))
-                    $adminGroupName[$v->uid][$v->group_id] = $groupName[$v->group_id];
+                    $adminGroupName[$v->uid][$v->group_id] = $groupName[$v->group_id]->name;
             }
             $groups = $request->auth()->getGroups();
             foreach ($groups as $m => $n) {
                 $adminGroupName[$request->auth()->id][$n['id']] = $n['name'];
             }
+
             list($where, $sort, $order, $offset, $limit) = $this->buildparams(new Admin());
             $total = Admin::
             where($where)
@@ -89,10 +91,12 @@ class AdminController extends Controller
                 ->offset($offset)
                 ->limit($limit)
                 ->get();
+            unset($v);
             foreach ($list as $k => &$v) {
                 $groups         = isset($adminGroupName[$v->id]) ? $adminGroupName[$v->id] : [];
                 $v->groups      = implode(',', array_keys($groups));
                 $v->groups_text = implode(',', array_values($groups));
+
             }
 
             $result = array("total" => $total, "rows" => $list);
@@ -192,7 +196,30 @@ class AdminController extends Controller
 
     public function del(Request $request)
     {
+        $ids = $request->post('ids');
+        $this->_initialize($request);
+        if ($ids) {
+            // 避免越权删除管理员
+            $childrenGroupIds = $this->childrenGroupIds;
 
+
+            $adminList = Admin::whereIn('id', explode(',', $ids))->whereHas('authGroupAccess', function ($query) use ($childrenGroupIds) {
+                $query->whereIn('group_id', $childrenGroupIds);
+            })->get();
+            if ($adminList) {
+                $deleteIds = [];
+                foreach ($adminList as $k => $v) {
+                    $deleteIds[] = $v->id;
+                }
+                $deleteIds = array_diff($deleteIds, [$request->auth()->id]);
+                if ($deleteIds) {
+                    Admin::destroy($deleteIds);
+                    AuthGroupAccess::whereIn('uid', $deleteIds)->delete();
+                    $this->success();
+                }
+            }
+        }
+        $this->error();
     }
 
 }

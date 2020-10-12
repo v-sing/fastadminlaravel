@@ -19,10 +19,10 @@ class BackendController
 
     public function viewInitData(View $view)
     {
-
-        $view->with('config', Config::cache());
-
-        $view->with('site', Config::cache()['site']);
+        $config=Config::cache();
+        $config['admin']['id']=request()->auth()->id;
+        $view->with('config', $config);
+        $view->with('site', $config['site']);
         $view->with('fixedmenu', false);
         $view->with('referermenu', false);
         $view->with('navlist', '');

@@ -60,4 +60,7 @@ class Admin extends Model
         return $this->hasMany('App\Models\ClassificationArticles', 'article_id', 'id');
     }
 
+    public function authGroupAccess(){
+        return $this->belongsTo(AuthGroupAccess::class,'id','uid');
+    }
 }
