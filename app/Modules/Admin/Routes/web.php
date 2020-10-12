@@ -35,6 +35,9 @@ Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function () {
     Route::get('/general/attachment/index', 'AttachmentController@index')->name('general.attachment.index');
     Route::get('/auth/admin', 'AdminController@index')->name('auth.admin');
     Route::get('/auth/admin/index', 'AdminController@index')->name('auth.admin.index');
+    Route::any('/auth/admin/add', 'AdminController@add')->name('auth.admin.add');
+    Route::any('/auth/admin/edit', 'AdminController@edit')->name('auth.admin.edit');
+    Route::post('/auth/admin/del', 'AdminController@del')->name('auth.admin.del');
     Route::get('/auth/adminlog', 'AdminlogController@index')->name('auth.adminlog');
     Route::get('/auth/adminlog/index', 'AdminlogController@index')->name('auth.adminlog.index');
     Route::get('/auth/adminlog/detail', 'AdminlogController@detail')->name('auth.adminlog.detail');

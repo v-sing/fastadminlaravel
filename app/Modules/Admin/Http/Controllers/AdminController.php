@@ -10,11 +10,13 @@ namespace App\Modules\Admin\Http\Controllers;
 
 
 use App\Http\Controllers\Controller;
+use App\Modules\Common\Library\Random;
 use App\Modules\Common\Library\Tree;
 use App\Modules\Model\Admin;
 use App\Modules\Model\AuthGroup;
 use App\Modules\Model\AuthGroupAccess;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class AdminController extends Controller
 {
@@ -100,5 +102,97 @@ class AdminController extends Controller
         return $this->view();
     }
 
+
+    public function add(Request $request)
+    {
+        $this->_initialize($request);
+
+        if ($request->isMethod('post')) {
+            $params = $request->post("row");
+            if ($params) {
+                $params['salt']     = Random::alnum();
+                $params['password'] = encrypt($params['password'] . $params['salt']);
+                $params['avatar']   = '/assets/img/avatar.png'; //设置新管理员默认头像。
+                $this->Validator($params, [
+                    'username' => 'required|max:50|unique:admins,username',
+                    'email'    => 'required|email|unique:admins,email'
+                ]);
+                $result = Admin::insertGetId($params);
+                if ($result === false) {
+                    $this->error();
+                }
+                $group = $request->post("group");
+
+                //过滤不允许的组别,避免越权
+                $group   = array_intersect($this->childrenGroupIds, $group);
+                $dataset = [];
+                foreach ($group as $value) {
+                    $dataset[] = ['uid' => $result, 'group_id' => $value];
+                }
+                DB::table((new AuthGroupAccess)->getTable())->insert($dataset);
+                $this->success();
+            }
+            $this->error();
+        }
+        return $this->view();
+    }
+
+    public function edit(Request $request)
+    {
+        $this->_initialize($request);
+        $ids   = $request->all('ids', '');
+        $model = new Admin();
+        $row   = $model->where('id', $ids)->first();
+        if (!$row)
+            $this->error(lang('No Results were found'));
+        if ($request->isMethod('post')) {
+            $params = $request->post("row");
+            if ($params) {
+                if ($params['password']) {
+                    $params['salt']     = Random::alnum();
+                    $params['password'] = encrypt($params['password'] . $params['salt']);
+                } else {
+                    unset($params['password'], $params['salt']);
+                }
+                //这里需要针对username和email做唯一验证
+                $this->Validator($params, [
+                    'username' => 'required|max:50|unique:admins,username,' . $row->id,
+                    'email'    => 'required|email|unique:admins,email,' . $row->id
+                ]);
+                $result = $row->where(['id' => $row->id])->update($params);
+                if ($result === false) {
+                    $this->error();
+                }
+                // 先移除所有权限
+                AuthGroupAccess::query()->where('uid', $row->id)->delete();
+
+                $group = $request->post("group");
+
+                // 过滤不允许的组别,避免越权
+                $group = array_intersect($this->childrenGroupIds, $group);
+
+                $dataset = [];
+                foreach ($group as $value) {
+                    $dataset[] = ['uid' => $row->id, 'group_id' => $value];
+                }
+                DB::table((new AuthGroupAccess)->getTable())->insert($dataset);
+                $this->success();
+            }
+            $this->error();
+        }
+        $grouplist = $request->auth()->getGroups($row['id']);
+        $groupids  = [];
+        foreach ($grouplist as $k => $v) {
+            $groupids[] = $v['id'];
+        }
+        $this->assign("row", $row);
+        $this->assign("groupids", $groupids);
+        return $this->view();
+    }
+
+    public function del(Request $request)
+    {
+
+    }
 
 }

@@ -51,7 +51,6 @@ class ProfileController extends Controller
             unset($v);
             if (isset($params['password'])) {
                 $params['salt'] = Random::alnum();
-
                 $params['password'] = encrypt($params['password'] . $params['salt']);
             }
             if ($params) {
