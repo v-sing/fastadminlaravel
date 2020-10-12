@@ -1,3 +1,7 @@
+
+<script>
+    var Groups= <?php echo json_encode($groups,256)?>;
+ </script>
 <div class="panel panel-default panel-intro">
     {!! build_heading() !!}
 

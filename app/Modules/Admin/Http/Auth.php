@@ -273,7 +273,7 @@ class Auth extends BaseAuth
             $groupIds[] = $v['id'];
         }
         // 取出所有分组
-        $groupList = $this->AuthGroupModel->where(['status' => 'normal'])->get()->toArray();
+        $groupList = $this->AuthGroupModel->get()->toArray();
         $objList   = [];
         foreach ($groups as $K => $v) {
             if ($v['rules'] === '*') {

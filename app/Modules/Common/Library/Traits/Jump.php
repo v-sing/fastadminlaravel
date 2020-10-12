@@ -139,29 +139,6 @@ Trait Jump
         return true;
     }
 
-    protected function assignconfig($name, $value = null)
-    {
-        $config = Config::cache();
-        if (is_null($value) && is_array($name)) {
-            foreach ($name as $field => $item) {
-                if (isset($config[$field])) {
-                    $config[$field] = array_merge($config[$field], $item);
-                } else {
-                    $config = array_merge($config, [$field => $item]);
-                }
-            }
-        } else {
-            if (isset($config[$name])) {
-                $config[$name] = array_merge($config[$name], $value);
-            } else {
-                $config = array_merge($config, [$name => $value]);
-            }
-
-        }
-        $this->assign['config'] = $config;
-        return true;
-    }
-
     /**
      * 使用layout时用
      * @param null $view

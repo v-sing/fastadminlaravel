@@ -41,4 +41,8 @@ Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function () {
     Route::post('/auth/adminlog/del', 'AdminlogController@del')->name('auth.adminlog.del');
     Route::get('/auth/group', 'GroupController@index')->name('auth.group');
     Route::get('/auth/group/index', 'GroupController@index')->name('auth.group.index');
+    Route::any('/auth/group/add', 'GroupController@add')->name('auth.group.add');
+    Route::any('/auth/group/edit', 'GroupController@edit')->name('auth.group.edit');
+    Route::any('/auth/group/del', 'GroupController@del')->name('auth.group.del');
+    Route::post('/auth/group/roletree', 'GroupController@roletree')->name('auth.group.roletree');
 });

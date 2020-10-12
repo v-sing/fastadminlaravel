@@ -74,4 +74,10 @@ class ModelMixin
         };
 
     }
+
+    public function toArray(){
+        return function () {
+           return [];
+        };
+    }
 }
