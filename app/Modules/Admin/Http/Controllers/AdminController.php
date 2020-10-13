@@ -17,6 +17,7 @@ use App\Modules\Model\AuthGroup;
 use App\Modules\Model\AuthGroupAccess;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use function Matrix\diagonal;
 
 class AdminController extends Controller
@@ -115,7 +116,7 @@ class AdminController extends Controller
             $params = $request->post("row");
             if ($params) {
                 $params['salt']     = Random::alnum();
-                $params['password'] = encrypt($params['password'] . $params['salt']);
+                $params['password'] = Hash::make($params['password'] . $params['salt']);
                 $params['avatar']   = '/assets/img/avatar.png'; //设置新管理员默认头像。
                 $this->Validator($params, [
                     'username' => 'required|max:50|unique:admins,username',
@@ -154,7 +155,7 @@ class AdminController extends Controller
             if ($params) {
                 if ($params['password']) {
                     $params['salt']     = Random::alnum();
-                    $params['password'] = encrypt($params['password'] . $params['salt']);
+                    $params['password'] = Hash::make($params['password'] . $params['salt']);
                 } else {
                     unset($params['password'], $params['salt']);
                 }

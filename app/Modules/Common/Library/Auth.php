@@ -98,7 +98,7 @@ class Auth
 //        dd($name);
         $list = []; //保存验证通过的规则名
         if ('url' == $mode) {
-            $REQUEST = unserialize(strtolower(serialize(input())));
+            $REQUEST = unserialize(strtolower(serialize(request()->input())));
         }
         $modulename=config('modulename');
         $rulelist[] = 'admin';

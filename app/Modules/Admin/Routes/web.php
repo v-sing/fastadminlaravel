@@ -17,11 +17,12 @@ Route::any('/logout', 'LoginController@logout')->prefix('admin')->name('logout')
 Route::any('/ajax/lang', 'AjaxController@lang')->prefix('admin')->name('lang');
 Route::any('/ajax/upload', 'AjaxController@upload')->name('upload');
 Route::any('/ajax/real', 'AjaxController@real')->prefix('admin')->name('real');
+Route::get('/index', 'IndexController@index')->prefix('admin')->name('index.index');
+
 Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function () {
     Route::get('/', function () {
         dd('This is the Admin module index page. Build something great!');
     });
-    Route::get('/index', 'IndexController@index')->name('index.index');
     Route::get('/dashboard', 'DashboardController@index')->name('dashboard.index');
     Route::get('/form/index', 'FormController@index')->name('form.index');
     Route::get('/general/profile', 'ProfileController@index')->name('profile.index');
