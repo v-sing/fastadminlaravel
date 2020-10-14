@@ -222,6 +222,7 @@ class Auth extends BaseAuth
 
     public function getRuleList($uid = null)
     {
+
         $uid = $this->getAdminId($uid);
         return parent::getRuleList($uid);
     }
@@ -336,7 +337,6 @@ class Auth extends BaseAuth
      */
     public function getBreadCrumb($path = '')
     {
-
         if ($this->breadcrumb || !$path)
             return $this->breadcrumb;
         $path_rule_id = 0;
@@ -368,7 +368,6 @@ class Auth extends BaseAuth
         $colorNums = count($colorArr);
         $badgeList = [];
         $module    = config('modulename');
-//        dump($module);exit;
         // 生成菜单的badge
         foreach ($params as $k => $v) {
             $url = $k;
@@ -388,7 +387,8 @@ class Auth extends BaseAuth
         }
 
         // 读取管理员当前拥有的权限节点
-        $userRule   = $this->getRuleList();
+
+        $userRule   = $this->getRuleList($this->getAdminId());
         $selected   = $referer = [];
         $refererUrl = Session::get('referer');
         // 必须将结果集转换为数组
@@ -423,7 +423,8 @@ class Auth extends BaseAuth
 
         $select_id = $selected ? $selected['id'] : 0;
         $menu      = $nav = '';
-        if (config('app.admin.multiplenav')) {
+
+        if (config('admin.multiplenav')) {
             $topList = [];
             foreach ($ruleList as $index => $item) {
                 if (!$item['pid']) {
@@ -528,9 +529,10 @@ class Auth extends BaseAuth
      * @param null $uid
      * @return mixed|null
      */
-    protected function getAdminId($uid = null)
+    public function getAdminId($uid = null)
     {
-        return $uid = is_null($uid) ? $this->id = Session::get('admin.id') : $uid;
+
+        return $uid = $uid = is_null($uid)||$uid=='' ? $this->id = Session::get('admin.id') : $uid;
     }
 
     public function getTitle()

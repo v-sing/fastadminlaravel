@@ -83,7 +83,6 @@ define(['jquery', 'bootstrap', 'toastr', 'layer', 'lang'], function ($, undefine
                 },
                 //发送Ajax请求
                 ajax: function (options, success, error) {
-                    console.log(options);
                     options = typeof options === 'string' ? {url: options} : options;
                     options['data']['_token'] = $('meta[name="csrf-token"]').attr('content');
                     var index = Layer.load(1, {

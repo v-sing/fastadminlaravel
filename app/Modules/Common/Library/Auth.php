@@ -42,6 +42,8 @@ class Auth
         'auth_user'         => 'user', // 用户信息表
     ];
 
+    protected $id = '';
+
     /**
      * 类架构函数
      * Auth constructor.
@@ -85,7 +87,7 @@ class Auth
         }
         // 获取用户需要验证的所有有效规则列表
         $rulelist = $this->getRuleList($uid);
-         if (in_array('*', $rulelist))
+        if (in_array('*', $rulelist))
             return true;
         if (is_string($name)) {
             $name = strtolower($name);
@@ -100,7 +102,7 @@ class Auth
         if ('url' == $mode) {
             $REQUEST = unserialize(strtolower(serialize(request()->input())));
         }
-        $modulename=config('modulename');
+        $modulename = config('modulename');
         $rulelist[] = 'admin';
         foreach ($rulelist as $rule) {
             if ($rule != $modulename) {
@@ -120,7 +122,6 @@ class Auth
                     $list[] = $rule;
                 }
             } else {
-//                dump([$rule1]);
                 if (in_array($rule, $name)) {
                     $list[] = $rule;
                 }
@@ -207,10 +208,10 @@ class Auth
      */
     public function getRuleIds($uid)
     {
-
         //读取用户所属用户组
         $groups = $this->getGroups($uid);
-        $ids    = []; //保存用户所属用户组设置的所有权限规则id
+
+        $ids = []; //保存用户所属用户组设置的所有权限规则id
         if (!isset($groups['rules'])) {
             foreach ($groups as $g) {
                 $ids = array_merge($ids, trim($g['rules']) == '*' ? ['*'] : explode(',', trim($g['rules'], ',')));
@@ -231,6 +232,7 @@ class Auth
      */
     public function getGroups($uid)
     {
+
         $info        = AuthGroupAccess::with(['authGroup'])->where(['uid' => $uid])->select('*')->first();
         $user_groups = [];
         if ($info) {

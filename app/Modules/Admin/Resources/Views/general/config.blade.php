@@ -160,7 +160,7 @@
                                                                    size="50"
                                                                    name="row[{{$item['name']}}]" type="text"
                                                                    value="{{$item['crux_value']}}"
-                                                                   data-base64="@if($item['crux_value']){!!get_upload_image($item['crux_value'])!!} @endif"
+                                                                   data-base64="@if($item['crux_value']){{$item['crux_value']}} @endif"
                                                                    data-tip="{{$item['tip']}}">
                                                             <span><button type="button" id="plupload-{{$item['name']}}"
                                                                           class="btn btn-danger plupload"
@@ -178,6 +178,7 @@
                                                             <ul class="row list-inline plupload-preview"
                                                                 id="p-{{$item['name']}}"></ul>
                                                         </div>
+
                                                     @endif
                                                     @if($item['type']=='file'||$item['type']=='files')
                                                         <div class="form-inline">
@@ -201,7 +202,7 @@
                                                     @endif
                                                     @if($item['type']=='switch')
                                                         <input id="c-{{$item['name']}}" name="row[{{$item['name']}}]"
-                                                               type="hidden" value="{{$item['crux_value']?1:0}}">
+                                                               type="hidden" value="{{$item['crux_value']}}">
                                                         <a href="javascript:;" data-toggle="switcher"
                                                            class="btn-switcher" data-input-id="c-{{$item['name']}}"
                                                            data-yes="1" data-no="0">

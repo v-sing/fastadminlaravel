@@ -80,6 +80,7 @@ class Config extends Model
             'selects'       => '下拉多选框',
             'checkbox'      => '复选框',
             'radio'         => '单选框',
+            'switch'        => '开关',
             'sign'          => '密码框',
         ];
     }
@@ -191,7 +192,7 @@ class Config extends Model
         $config['site']['configgroup']       = $array ['configgroup'];
         $config['admin']['login_captcha']    = isset($array['basic']['login_captcha']) ? $array['basic']['login_captcha'] : true;
         $config['admin']['login_background'] = isset($array['basic']['login_background']) ? $array['basic']['login_background'] : '/assets/img/loginbg.jpg';
-        $config['admin']['multiplenav']      = isset($array['basic']['multiplenav']) ? $array['basic']['multiplenav'] : true;
+        $config['admin']['multiplenav']      = isset($array['basic']['multiplenav']) ? $array['basic']['multiplenav'] : false;
         $config['admin']['lang_switch_on']   = isset($array['basic']['lang_switch_on']) ? $array['basic']['lang_switch_on'] : true;
         $config['admin']['api_url']          = isset($array['basic']['api_url']) ? $array['basic']['api_url'] : 'https://api.fastadmin.net';
         $config['admin']['api_url']          = isset($array['basic']['api_url']) ? $array['basic']['api_url'] : 'https://api.fastadmin.net';

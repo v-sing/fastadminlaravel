@@ -6,6 +6,7 @@ use App\Modules\Admin\Http\Auth;
 use App\Modules\Common\Library\Traits\Jump;
 use App\Modules\Model\AdminLog;
 use Closure;
+use Illuminate\Routing\Route;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\View;
 
@@ -30,15 +31,18 @@ class AdminMiddleware
             $this->error(trans('admin::common.Please login first'), route('login', ['url' => urlencode($url)]));
         }
 
+        $modulename     = config('modulename');
         $controllername = config('controllername');
         $actionname     = config('actionname');
-        $path           = $controllername . '/' . $actionname;
+//        $path           = $controllername . '/' . $actionname;
+        $path = str_replace($modulename . '/', '', $request->path());
         if (!$this->auth->check($path)) {
             $this->error('You have no permission');
         }
+
         // 设置面包屑导航数据
         $breadcrumb = $this->auth->getBreadCrumb($path);
-//        dump($breadcrumb);exit;
+
         array_pop($breadcrumb);
         // 定义是否Addtabs请求
         !defined('IS_ADDTABS') && define('IS_ADDTABS', $request->input("addtabs") ? TRUE : FALSE);

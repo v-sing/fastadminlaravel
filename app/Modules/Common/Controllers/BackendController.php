@@ -26,6 +26,7 @@ class BackendController
         $view->with('fixedmenu', false);
         $view->with('referermenu', false);
         $view->with('navlist', '');
+        $view->with('breadcrumb',[]);
         $view->with('title', request()->auth()->getTitle());
         AdminLog::setTitle(lang(request()->auth()->getTitle()));
         $auth = new Auth();
