@@ -9,14 +9,18 @@
 namespace App\Modules\Admin\Http\Controllers;
 
 
-use App\Http\Controllers\Controller;
 use App\Modules\Admin\Http\Auth;
+use App\Modules\Common\Controllers\BackendController;
 use App\Modules\Model\AdminLog;
 use Illuminate\Http\Request;
 
-class LoginController extends Controller
+class LoginController extends BackendController
 {
 
+
+    protected $noNeedLogin = ['login'];
+
+    protected $noNeedRight = ['login'];
 
     /**
      * 登陆

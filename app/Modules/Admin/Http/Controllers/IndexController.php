@@ -9,18 +9,18 @@
 namespace App\Modules\Admin\Http\Controllers;
 
 
-use App\Http\Controllers\Controller;
 use App\Modules\Admin\Http\Auth;
+use App\Modules\Common\Controllers\BackendController;
+use Illuminate\Http\Request;
 
-class IndexController extends Controller
+class IndexController extends BackendController
 {
 
+    protected $noNeedRight=['index'];
 
-    public function index()
+    public function index(Request $request)
     {
-
-
-        $auth = new Auth();
+        $auth = $request->auth();
         list($menulist, $navlist, $fixedmenu, $referermenu) = $auth->getSidebar([
             'dashboard' => 'hot',
             'addon'     => ['new', 'red', 'badge'],
@@ -31,7 +31,7 @@ class IndexController extends Controller
             'menulist'    => $menulist,
             'navlist'     => $navlist,
             'fixedmenu'   => $fixedmenu,
-            'referermenu' => $referermenu ,
+            'referermenu' => $referermenu,
         ]);
     }
 

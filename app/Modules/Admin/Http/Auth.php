@@ -114,8 +114,9 @@ class Auth extends BaseAuth
     public function check($name, $uid = '', $relation = 'or', $mode = 'url')
     {
         if (!$uid) {
-            $uid = $this->id;
+            $uid = $this->id = $this->getAdminId();
         }
+
         return parent::check($name, $uid, $relation, $mode);
     }
 
@@ -274,7 +275,7 @@ class Auth extends BaseAuth
             $groupIds[] = $v['id'];
         }
         // 取出所有分组
-        $groupList = $this->AuthGroupModel->get()->toArray();
+        $groupList = AuthGroup::query()->where('status', 'normal')->get();
         $objList   = [];
         foreach ($groups as $K => $v) {
             if ($v['rules'] === '*') {
@@ -340,11 +341,9 @@ class Auth extends BaseAuth
         if ($this->breadcrumb || !$path)
             return $this->breadcrumb;
         $path_rule_id = 0;
-
         foreach ($this->rules as $rule) {
             $path_rule_id = $rule['name'] == $path ? $rule['id'] : $path_rule_id;
         }
-
         if ($path_rule_id) {
             $this->breadcrumb = Tree::instance()->init($this->rules)->getParents($path_rule_id, true);
             foreach ($this->breadcrumb as $k => &$v) {
@@ -532,7 +531,7 @@ class Auth extends BaseAuth
     public function getAdminId($uid = null)
     {
 
-        return $uid = $uid = is_null($uid)||$uid=='' ? $this->id = Session::get('admin.id') : $uid;
+        return $uid = $uid = is_null($uid) || $uid == '' ? $this->id = Session::get('admin.id') : $uid;
     }
 
     public function getTitle()

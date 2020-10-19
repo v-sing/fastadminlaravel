@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5d80a0033b1d592b201ebab6c896eae9",
+    "content-hash": "21c3e1723efcb7ed72034bd2af4d63cc",
     "packages": [
         {
             "name": "alicfeng/identity-card",
@@ -908,6 +908,45 @@
                 }
             ],
             "time": "2020-05-31T07:30:16+00:00"
+        },
+        {
+            "name": "guijianshi/baidu-ocr",
+            "version": "2.2.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/guijianshi/baidu_ocr.git",
+                "reference": "490fd944d27616615b44275679956e5ef569b82c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/guijianshi/baidu_ocr/zipball/490fd944d27616615b44275679956e5ef569b82c",
+                "reference": "490fd944d27616615b44275679956e5ef569b82c",
+                "shasum": "",
+                "mirrors": [
+                    {
+                        "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
+                        "preferred": true
+                    }
+                ]
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "baidu\\ocr\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "guijianshi",
+                    "email": "1039170565@qq.com"
+                }
+            ],
+            "description": "百度ocr包",
+            "time": "2018-10-16T06:40:39+00:00"
         },
         {
             "name": "guzzlehttp/guzzle",

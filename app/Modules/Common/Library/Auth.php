@@ -35,7 +35,7 @@ class Auth
     //默认配置
     protected $config = [
         'auth_on'           => 1, // 权限开关
-        'auth_type'         => 2, // 认证方式，1为实时认证；2为登录认证。
+        'auth_type'         => 1, // 认证方式，1为实时认证；2为登录认证。
         'auth_group'        => 'auth_group', // 用户组数据表名
         'auth_group_access' => 'auth_group_access', // 用户-用户组关系表
         'auth_rule'         => 'auth_rule', // 权限规则表
@@ -81,7 +81,6 @@ class Auth
      */
     public function check($name, $uid, $relation = 'or', $mode = 'url')
     {
-//        $name = Admin::module() . '/' . $name;
         if (!$this->config['auth_on']) {
             return true;
         }
@@ -97,22 +96,13 @@ class Auth
                 $name = [$name];
             }
         }
-//        dd($name);
+
         $list = []; //保存验证通过的规则名
         if ('url' == $mode) {
-            $REQUEST = unserialize(strtolower(serialize(request()->input())));
+            $REQUEST = json_decode(strtolower(json_encode(request()->input())), true);
         }
-        $modulename = config('modulename');
-        $rulelist[] = 'admin';
         foreach ($rulelist as $rule) {
-            if ($rule != $modulename) {
-                $rule = $modulename . '/' . $rule;
-
-            }
-            $rule1    = $rule;
-            $realPath = getRealRoute($rule);
-            $rule     = $realPath['realPath'];
-            $query    = preg_replace('/^.+\?/U', '', $rule);
+            $query = preg_replace('/^.+\?/U', '', $rule);
             if ('url' == $mode && $query != $rule) {
                 parse_str($query, $param); //解析规则中的param
                 $intersect = array_intersect_assoc($REQUEST, $param);
@@ -127,7 +117,6 @@ class Auth
                 }
             }
         }
-
         if ('or' == $relation && !empty($list)) {
             return true;
         }
@@ -152,10 +141,8 @@ class Auth
         if (2 == $this->config['auth_type'] && Session::has('_rule_list_' . $uid)) {
             return Session::get('_rule_list_' . $uid);
         }
-
         // 读取用户规则节点
         $ids = $this->getRuleIds($uid);
-
         if (empty($ids)) {
             $_rulelist[$uid] = [];
             return [];
@@ -232,19 +219,21 @@ class Auth
      */
     public function getGroups($uid)
     {
+        $info = AuthGroupAccess::with(['authGroup'])->where('uid', $uid)->select('*')->first();
 
-        $info        = AuthGroupAccess::with(['authGroup'])->where(['uid' => $uid])->select('*')->first();
         $user_groups = [];
         if ($info) {
             $user_groups = [
                 'uid'      => $info->uid,
-                'group_id' => $info->group_id,
                 'id'       => $info->authGroup->id,
+                'pid'      => $info->authGroup->pid,
+                'group_id' => $info->group_id,
                 'name'     => $info->authGroup->name,
                 'rules'    => $info->authGroup->rules,
             ];
         }
         $groups[$uid] = $user_groups ?: [];
+
         return $groups;
     }
 

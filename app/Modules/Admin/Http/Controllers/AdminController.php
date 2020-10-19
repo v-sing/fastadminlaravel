@@ -9,59 +9,34 @@
 namespace App\Modules\Admin\Http\Controllers;
 
 
-use App\Http\Controllers\Controller;
+use App\Modules\Admin\Http\Middleware\AdminMiddleware;
+use App\Modules\Common\Controllers\BackendController;
 use App\Modules\Common\Library\Random;
-use App\Modules\Common\Library\Tree;
 use App\Modules\Model\Admin;
 use App\Modules\Model\AuthGroup;
 use App\Modules\Model\AuthGroupAccess;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use function Matrix\diagonal;
 
-class AdminController extends Controller
+class AdminController extends BackendController
 {
     protected $childrenGroupIds = [];
     protected $childrenAdminIds = [];
 
-    public function _initialize(Request $request)
+    public function _initialize()
     {
-
-        $this->childrenAdminIds = $request->auth()->getChildrenAdminIds(true);
-        $this->childrenGroupIds = $request->auth()->getChildrenGroupIds(true);
-
-        $groupList = AuthGroup::whereIn('id', $this->childrenGroupIds)->get()->toArray();
-        Tree::instance()->init($groupList);
-        $groupdata = [];
-        if ($request->auth()->isSuperAdmin()) {
-            $result = Tree::instance()->getTreeList(Tree::instance()->getTreeArray(0));
-            foreach ($result as $k => $v) {
-                $groupdata[$v['id']] = $v['name'];
-            }
-        } else {
-            $result = [];
-            $groups = $request->auth()->getGroups();
-            foreach ($groups as $m => $n) {
-                $childlist = Tree::instance()->getTreeList(Tree::instance()->getTreeArray($n['id']));
-                $temp      = [];
-                foreach ($childlist as $k => $v) {
-                    $temp[$v['id']] = $v['name'];
-                }
-                $result[lang($n['name'])] = $temp;
-            }
-            $groupdata = $result;
-        }
-        $this->assign('groupdata', $groupdata);
+        parent::_initialize();
+        //初始化数据
+        $this->middleware(AdminMiddleware::class);
     }
 
     public function index(Request $request)
     {
-        $this->_initialize($request);
 
         if ($request->isAjax()) {
 
-            $childrenGroupIds = $this->childrenGroupIds;
+            $childrenGroupIds = $request->childrenGroupIds;
             $groupName        = AuthGroup::whereIn('id', $childrenGroupIds)
                 ->select('id', 'name')->get();
             $authGroupList    = AuthGroupAccess::whereIn('group_id', $childrenGroupIds)
@@ -80,13 +55,13 @@ class AdminController extends Controller
             list($where, $sort, $order, $offset, $limit) = $this->buildparams(new Admin());
             $total = Admin::
             where($where)
-                ->whereIn('id', $this->childrenAdminIds)
+                ->whereIn('id', $request->childrenAdminIds)
                 ->orderBy($sort, $order)
                 ->count();
 
             $list = Admin::
             where($where)
-                ->whereIn('id', $this->childrenAdminIds)
+                ->whereIn('id', $request->childrenAdminIds)
                 ->select('*')
                 ->orderBy($sort, $order)
                 ->offset($offset)
@@ -110,8 +85,6 @@ class AdminController extends Controller
 
     public function add(Request $request)
     {
-        $this->_initialize($request);
-
         if ($request->isMethod('post')) {
             $params = $request->post("row");
             if ($params) {
@@ -129,7 +102,7 @@ class AdminController extends Controller
                 $group = $request->post("group");
 
                 //过滤不允许的组别,避免越权
-                $group   = array_intersect($this->childrenGroupIds, $group);
+                $group   = array_intersect($request->childrenGroupIds, $group);
                 $dataset = [];
                 foreach ($group as $value) {
                     $dataset[] = ['uid' => $result, 'group_id' => $value];
@@ -144,7 +117,6 @@ class AdminController extends Controller
 
     public function edit(Request $request)
     {
-        $this->_initialize($request);
         $ids   = $request->all('ids', '');
         $model = new Admin();
         $row   = $model->where('id', $ids)->first();
@@ -174,7 +146,7 @@ class AdminController extends Controller
                 $group = $request->post("group");
 
                 // 过滤不允许的组别,避免越权
-                $group = array_intersect($this->childrenGroupIds, $group);
+                $group = array_intersect($request->childrenGroupIds, $group);
 
                 $dataset = [];
                 foreach ($group as $value) {
@@ -198,10 +170,9 @@ class AdminController extends Controller
     public function del(Request $request)
     {
         $ids = $request->post('ids');
-        $this->_initialize($request);
         if ($ids) {
             // 避免越权删除管理员
-            $childrenGroupIds = $this->childrenGroupIds;
+            $childrenGroupIds = $request->childrenGroupIds;
 
 
             $adminList = Admin::whereIn('id', explode(',', $ids))->whereHas('authGroupAccess', function ($query) use ($childrenGroupIds) {

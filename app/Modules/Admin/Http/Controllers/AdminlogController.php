@@ -9,17 +9,13 @@
 namespace App\Modules\Admin\Http\Controllers;
 
 
-use App\Http\Controllers\Controller;
+use App\Modules\Common\Controllers\BackendController;
 use Illuminate\Http\Request;
 use App\Modules\Model\AdminLog as LogModel;
 
-class AdminlogController extends Controller
+class AdminlogController extends BackendController
 {
 
-    public function __contract()
-    {
-
-    }
 
     public function index(Request $request)
     {
@@ -47,14 +43,14 @@ class AdminlogController extends Controller
     public function del(Request $request)
     {
         $ids = $request->post('ids');
-        LogModel::whereIn('id',  explode(',',$ids))->delete();
+        LogModel::whereIn('id', explode(',', $ids))->delete();
         $this->success();
     }
 
     public function detail(Request $request)
     {
         $ids  = $request->get('ids');
-        $info = LogModel::where('id',$ids)->first();
+        $info = LogModel::where('id', $ids)->first();
 
         $this->assign('row', $info->toArray());
 

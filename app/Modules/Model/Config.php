@@ -199,7 +199,7 @@ class Config extends Model
         $config['upload']['cdnurl']          = isset($array['upload']['cdnurl']) ? $array['upload']['cdnurl'] : '';
         $config['upload']['uploadurl']       = isset($array['upload']['uploadurl']) ? $array['upload']['uploadurl'] : '/ajax/upload';
         $config['upload']['bucket']          = isset($array['upload']['bucket']) ? $array['upload']['bucket'] : 'local';
-        $config['upload']['maxsize']         = isset($array['upload']['maxsize']) ? $array['upload']['maxsize'] : '10' * 10240;
+        $config['upload']['maxsize']         = isset($array['upload']['maxsize']) ? $array['upload']['maxsize'] : '10mb';
         $config['upload']['mimetype']        = isset($array['upload']['mimetype']) ? $array['upload']['mimetype'] : 'jpg,png,bmp,jpeg,gif,zip,rar,xls,xlsx';
         $config['upload']['multipart']       = isset($array['upload']['multipart']) ? $array['upload']['multipart'] : [];
         $config['upload']['multiple']        = isset($array['upload']['multiple']) ? $array['upload']['multiple'] : false;

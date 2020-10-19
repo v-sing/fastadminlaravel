@@ -2,37 +2,22 @@
 /**
  * Created by PhpStorm.
  * User: zhoulongtao
- * Date: 2020-07-09
- * Time: 20:08
+ * Date: 2020-10-19
+ * Time: 16:30
  */
 
 namespace App\Modules\Common\Library\Traits;
 
-
-use App\Modules\Model\Config;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Support\Facades\Request;
-use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\View;
 
-Trait Jump
+
+trait Backend
 {
 
-    /**
-     * 是否开启数据限制
-     * 支持auth/personal
-     * 表示按权限判断/仅限个人
-     * 默认为禁用,若启用请务必保证表中存在admin_id字段
-     */
-    protected $dataLimit = false;
-
     private $assign = [];
-
-    protected $layout = 'admin::layouts.site';
-
-    protected $searchFields = [];
-    protected $relationSearch = [];
 
     /**
      * @param string $msg

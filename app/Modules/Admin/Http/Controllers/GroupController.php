@@ -9,60 +9,35 @@
 namespace App\Modules\Admin\Http\Controllers;
 
 
-use App\Http\Controllers\Controller;
+use App\Modules\Admin\Http\Middleware\GroupMiddleware;
+use App\Modules\Common\Controllers\BackendController;
 use App\Modules\Common\Library\Tree;
 use App\Modules\Model\AuthGroup;
 use App\Modules\Model\AuthGroupAccess;
 use App\Modules\Model\AuthRule;
 use Illuminate\Http\Request;
 
-class GroupController extends Controller
+class GroupController extends BackendController
 {
-    protected $model = null;
-    protected $childrenGroupIds = [];
-    protected $groupdata = [];
 
-    public function _initialize($request)
+
+    public function _initialize()
     {
+        parent::_initialize();
         $this->model = new AuthGroup();
-
-        $this->childrenGroupIds = $request->auth()->getChildrenGroupIds(true);
-
-        $groupList = AuthGroup::whereIn('id', $this->childrenGroupIds)->get()->toArray();
-        Tree::instance()->init($groupList);
-        $result = [];
-        if ($request->auth()->isSuperAdmin()) {
-            $result = Tree::instance()->getTreeList(Tree::instance()->getTreeArray(0));
-        } else {
-            $groups = $request->auth()->getGroups();
-            foreach ($groups as $m => $n) {
-                $result = array_merge($result, Tree::instance()->getTreeList(Tree::instance()->getTreeArray($n['pid'])));
-            }
-        }
-        $groupName = [];
-        foreach ($result as $k => $v) {
-            $groupName[$v['id']] = $v['name'];
-        }
-
-        $this->groupdata = $groupName;
-        $this->assign("groups", ['id' => $request->auth()->id, 'group_ids' => $request->auth()->getGroupIds()]);
-
-        $this->assign('groupdata', $this->groupdata);
+        $this->middleware(GroupMiddleware::class);
     }
 
     public function index(Request $request)
     {
-
-        $this->_initialize($request);
-
         if ($request->isAjax()) {
-            $list      = AuthGroup::whereIn('id', array_keys($this->groupdata))->get()->toArray();
+            $list      = AuthGroup::whereIn('id', array_keys($request->groupdata))->get()->toArray();
             $groupList = [];
             foreach ($list as $k => $v) {
                 $groupList[$v['id']] = $v;
             }
             $list = [];
-            foreach ($this->groupdata as $k => $v) {
+            foreach ($request->groupdata as $k => $v) {
                 if (isset($groupList[$k])) {
                     $groupList[$k]['name'] = $v;
                     $list[]                = $groupList[$k];
@@ -78,11 +53,10 @@ class GroupController extends Controller
 
     public function add(Request $request)
     {
-        $this->_initialize($request);
         if ($request->isMethod('post')) {
             $params          = $request->post("row", []);
             $params['rules'] = explode(',', $params['rules']);
-            if (!in_array($params['pid'], $this->childrenGroupIds)) {
+            if (!in_array($params['pid'], $request->childrenGroupIds)) {
                 $this->error(lang('The parent group can not be its own child'));
             }
             $parentmodel = AuthGroup::query()->where('id', $params['pid'])->first();
@@ -111,7 +85,6 @@ class GroupController extends Controller
 
     public function edit(Request $request)
     {
-        $this->_initialize($request);
 
         $ids = $request->get('ids');
         $row = AuthGroup::query()->where('id', $ids)->first();
@@ -121,7 +94,7 @@ class GroupController extends Controller
         if ($request->isMethod('post')) {
             $params = $request->post("row", []);
             // 父节点不能是它自身的子节点
-            if (!in_array($params['pid'], $this->childrenGroupIds)) {
+            if (!in_array($params['pid'], $request->childrenGroupIds)) {
                 $this->error(lang('The parent group can not be its own child'));
             }
             $params['rules'] = explode(',', $params['rules']);
@@ -196,7 +169,6 @@ class GroupController extends Controller
      */
     public function roletree(Request $request)
     {
-        $this->_initialize($request);
         $model             = new AuthGroup();
         $id                = $request->post("id");
         $pid               = $request->post("pid");
@@ -225,7 +197,7 @@ class GroupController extends Controller
             //当前所有正常规则列表
             $ruleTree->init($parentRuleList);
             //角色组列表
-            $groupTree->init($model->whereIn('id', $this->childrenGroupIds)->select()->toArray());
+            $groupTree->init($model->whereIn('id', $request->childrenGroupIds)->select()->toArray());
 
             //读取当前角色下规则ID集合
             $adminRuleIds = $request->auth()->getRuleIds();
@@ -233,7 +205,7 @@ class GroupController extends Controller
             $superadmin = $request->auth()->isSuperAdmin();
             //当前拥有的规则ID集合
             $currentRuleIds = $id ? explode(',', $currentGroupModel->rules) : [];
-            if (!$id || !in_array($pid, $this->childrenGroupIds) || !in_array($pid, $groupTree->getChildrenIds($id, true))) {
+            if (!$id || !in_array($pid, $request->childrenGroupIds) || !in_array($pid, $groupTree->getChildrenIds($id, true))) {
                 $parentRuleList = $ruleTree->getTreeList($ruleTree->getTreeArray(0), 'name');
                 $hasChildrens   = [];
                 foreach ($parentRuleList as $k => $v) {

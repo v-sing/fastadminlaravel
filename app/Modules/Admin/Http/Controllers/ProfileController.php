@@ -9,7 +9,7 @@
 namespace App\Modules\Admin\Http\Controllers;
 
 
-use App\Http\Controllers\Controller;
+use App\Modules\Common\Controllers\BackendController;
 use App\Modules\Common\Library\Random;
 use App\Modules\Model\Admin;
 use App\Modules\Model\AdminLog;
@@ -17,7 +17,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 
-class ProfileController extends Controller
+class ProfileController extends BackendController
 {
 
     public function index(Request $request)
@@ -51,8 +51,8 @@ class ProfileController extends Controller
             $params = array_filter(array_intersect_key($params, array_flip(array('email', 'nickname', 'password', 'avatar'))));
             unset($v);
             if (isset($params['password'])) {
-                $params['salt'] = Random::alnum();
-                $params['password'] =  Hash::make($params['password'] . $params['salt']);
+                $params['salt']     = Random::alnum();
+                $params['password'] = Hash::make($params['password'] . $params['salt']);
             }
             if ($params) {
                 $array = Session::get("admin");

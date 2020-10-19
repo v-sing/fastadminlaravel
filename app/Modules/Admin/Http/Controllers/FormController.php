@@ -9,12 +9,12 @@
 namespace App\Modules\Admin\Http\Controllers;
 
 
-use App\Http\Controllers\Controller;
+use App\Modules\Common\Controllers\BackendController;
 use FormBuilder\components\Validate;
 use LaravelFormBuilder\Form;
 use Illuminate\Http\Request;
 
-class FormController extends Controller
+class FormController extends BackendController
 {
 
 
@@ -24,18 +24,19 @@ class FormController extends Controller
         $config = ['path' => public_path('download/excel/')];
 
 
-        $writer  = new \Vtiful\Kernel\Excel($config);
+        $writer = new \Vtiful\Kernel\Excel($config);
 
         $filePath = $writer->fileName('tutorial01.xlsx', 'sheet1')
             ->header(['Item', 'Cost'])
             ->data([
                 ['Rent', 1000],
-                ['Gas',  100],
+                ['Gas', 100],
                 ['Food', 300],
-                ['Gym',  50],
+                ['Gym', 50],
             ])
             ->output();
-dump($filePath);exit;
+        dump($filePath);
+        exit;
         return $this->view();
     }
 

@@ -9,11 +9,11 @@
 namespace App\Modules\Admin\Http\Controllers;
 
 
-use App\Http\Controllers\Controller;
+use App\Modules\Common\Controllers\BackendController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Date;
 
-class DashboardController extends Controller
+class DashboardController extends BackendController
 {
 
     public function index(Request $request)

@@ -9,15 +9,18 @@
 namespace App\Modules\Admin\Http\Controllers;
 
 
-use App\Http\Controllers\Controller;
+use App\Modules\Common\Controllers\BackendController;
 use App\Modules\Common\Library\IdentityInformation;
 use App\Modules\Common\Library\Random;
 use App\Modules\Model\Attachment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
-class AjaxController extends Controller
+class AjaxController extends BackendController
 {
+    protected $needRightOnly = ['index'];
+    protected $needLoginOnly = ['index'];
+
 
     public function lang(Request $request)
     {

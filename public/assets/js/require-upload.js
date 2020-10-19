@@ -196,6 +196,7 @@ define(['jquery', 'bootstrap', 'plupload', 'template'], function ($, undefined, 
                         }
                         mimetype = mimetypeArr;
                     }
+                    console.log(maxsize);
                     //生成Plupload实例
                     Upload.list[id] = new Plupload.Uploader({
                         runtimes: 'html5,flash,silverlight,html4',
@@ -282,7 +283,6 @@ define(['jquery', 'bootstrap', 'plupload', 'template'], function ($, undefined, 
                     if (preview_id) {
                         // 监听事件
                         $(document.body).on("fa.preview.change", "#" + preview_id, function () {
-                            console.log(2322);
                             var urlArr = new Array();
                             var fullUrlArr=new Array()
                             $("#" + preview_id + " [data-url]").each(function (i, j) {

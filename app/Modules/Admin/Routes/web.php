@@ -19,7 +19,7 @@ Route::any('/ajax/upload', 'AjaxController@upload')->name('upload');
 Route::any('/ajax/real', 'AjaxController@real')->prefix('admin')->name('real');
 Route::get('/index', 'IndexController@index')->prefix('admin')->name('index.index');
 
-Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function () {
+Route::group(['prefix' => 'admin'], function () {
     Route::get('/', function () {
         dd('This is the Admin module index page. Build something great!');
     });

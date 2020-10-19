@@ -9,12 +9,12 @@
 namespace App\Modules\Admin\Http\Controllers;
 
 
-use App\Http\Controllers\Controller;
+use App\Modules\Common\Controllers\BackendController;
 use App\Modules\Model\Config;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redis;
 
-class GeneralController extends Controller
+class GeneralController extends BackendController
 {
 
     public function config()

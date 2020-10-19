@@ -158,8 +158,16 @@ if (!function_exists('build_toolbar')) {
      */
     function build_toolbar($btns = NULL, $attr = [])
     {
-        $auth       = Auth::instance();
-        $controller = str_replace('.', '/', strtolower(config('controllername')));
+        $auth     = Auth::instance();
+        $name     = request()->route()->getName();
+        $nameData = explode('.', $name);
+        if (count($nameData) > 2) {
+            $nameData1 = $nameData;
+            $nameData  = [
+                $nameData1[0], $nameData1[1]
+            ];
+        }
+        $controller = str_replace('.', '/', strtolower(implode('/',$nameData)));
         $btns       = $btns ? $btns : ['refresh', 'add', 'edit', 'del', 'import'];
         $btns       = is_array($btns) ? $btns : explode(',', $btns);
         $index      = array_search('delete', $btns);

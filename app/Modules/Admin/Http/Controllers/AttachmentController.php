@@ -9,11 +9,11 @@
 namespace App\Modules\Admin\Http\Controllers;
 
 
-use App\Http\Controllers\Controller;
+use App\Modules\Common\Controllers\BackendController;
 use App\Modules\Model\Attachment;
 use Illuminate\Http\Request;
 
-class AttachmentController extends Controller
+class AttachmentController extends BackendController
 {
 
 
