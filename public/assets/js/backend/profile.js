@@ -9,7 +9,7 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form', 'upload'], function (
                 advancedSearch: true,
                 pagination: true,
                 extend: {
-                    "index_url": "profile/index",
+                    "index_url": "general/profile/index",
                     "add_url": "",
                     "edit_url": "",
                     "del_url": "",

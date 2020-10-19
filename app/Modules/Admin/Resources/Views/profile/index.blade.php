@@ -45,7 +45,7 @@
             </div>
             <div class="panel-body">
                 <form id="update-form" role="form" data-toggle="validator" method="POST"
-                      action="{{url('admin/profile/update')}}">
+                      action="{{route('general.profile.update')}}">
                     <input type="hidden" id="c-avatar" name="row[avatar]" value="{{$admin['avatar']}}"/>
                     <div class="box-body box-profile">
 

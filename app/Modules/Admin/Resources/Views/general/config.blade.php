@@ -40,7 +40,7 @@
                 <div class="tab-pane fade {{$vo['active'] ? 'active in' : ''}}" id="{{$vo['name']}}">
                     <div class="widget-body no-padding">
                         <form id="{{$vo['name']}}-form" class="edit-form form-horizontal" role="form"
-                              data-toggle="validator" method="POST" action="{{url('admin/general/config/edit')}}">
+                              data-toggle="validator" method="POST" action="{{route('general.config.edit')}}">
                             <table class="table table-striped">
                                 <thead>
                                 <tr>
@@ -254,7 +254,7 @@
             @endforeach
             <div class="tab-pane fade" id="addcfg">
                 <form id="add-form" class="form-horizontal" role="form" data-toggle="validator" method="POST"
-                      action="{{url('admin/general/config/add')}}">
+                      action="{{route('general.config.add')}}">
                     <div class="form-group">
                         <label for="type" class="control-label col-xs-12 col-sm-2">{{lang('Type')}}:</label>
                         <div class="col-xs-12 col-sm-4">

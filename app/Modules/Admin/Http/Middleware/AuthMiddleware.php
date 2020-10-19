@@ -32,7 +32,7 @@ class AuthMiddleware
 
         $path = preg_replace('/^' . $request->modulename . '\//', '', $request->path());
         if (!$request->auth->check($path)) {
-            $this->error(lang('You have no permission'));
+            $this->error(lang('You have no permission'),'',[$path]);
         }
         return $next($request);
 

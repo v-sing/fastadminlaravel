@@ -20,6 +20,7 @@ use Illuminate\Http\Request;
 class GroupController extends BackendController
 {
 
+    protected $noNeedRight = ['roletree'];
 
     public function _initialize()
     {

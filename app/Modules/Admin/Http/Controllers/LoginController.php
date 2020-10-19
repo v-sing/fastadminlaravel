@@ -20,7 +20,7 @@ class LoginController extends BackendController
 
     protected $noNeedLogin = ['login'];
 
-    protected $noNeedRight = ['login'];
+    protected $noNeedRight = ['login','logout'];
 
     /**
      * 登陆

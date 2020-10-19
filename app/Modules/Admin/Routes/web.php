@@ -25,9 +25,9 @@ Route::group(['prefix' => 'admin'], function () {
     });
     Route::get('/dashboard', 'DashboardController@index')->name('dashboard.index');
     Route::get('/form/index', 'FormController@index')->name('form.index');
-    Route::get('/general/profile', 'ProfileController@index')->name('profile.index');
-    Route::get('/profile/index', 'ProfileController@index')->name('profile.index');
-    Route::post('/profile/update', 'ProfileController@update')->name('profile.update');
+    Route::get('/general/profile', 'ProfileController@index')->name('general.profile');
+    Route::get('/general/profile/index', 'ProfileController@index')->name('general.profile.index');
+    Route::post('/general/profile/update', 'ProfileController@update')->name('general.profile.update');
     Route::get('/general/config', 'GeneralController@config')->name('general.config');
     Route::post('/general/config/check', 'GeneralController@check')->name('general.config.check');
     Route::post('/general/config/add', 'GeneralController@add')->name('general.config.add');

@@ -107,12 +107,12 @@
                         <!-- Menu Footer-->
                         <li class="user-footer">
                             <div class="pull-left">
-                                <a href="{{url('admin/general/profile')}}" class="btn btn-primary addtabsit"><i
+                                <a href="{{route('general.profile')}}" class="btn btn-primary addtabsit"><i
                                             class="fa fa-user"></i>
                                     {{lang('Profile')}}</a>
                             </div>
                             <div class="pull-right">
-                                <a href="{{url('admin/logout')}}" class="btn btn-danger"><i class="fa fa-sign-out"></i>
+                                <a href="{{route('logout')}}" class="btn btn-danger"><i class="fa fa-sign-out"></i>
                                     {{lang('Logout')}}</a>
                             </div>
                         </li>
