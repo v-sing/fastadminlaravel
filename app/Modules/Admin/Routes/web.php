@@ -49,4 +49,10 @@ Route::group(['prefix' => 'admin'], function () {
     Route::any('/auth/group/edit', 'GroupController@edit')->name('auth.group.edit');
     Route::any('/auth/group/del', 'GroupController@del')->name('auth.group.del');
     Route::post('/auth/group/roletree', 'GroupController@roletree')->name('auth.group.roletree');
+    Route::get('/auth/rule', 'RuleController@index')->name('auth.rule');
+    Route::get('/auth/rule/index', 'RuleController@index')->name('auth.rule.index');
+    Route::any('/auth/rule/add', 'RuleController@add')->name('auth.rule.add');
+    Route::any('/auth/rule/edit', 'RuleController@edit')->name('auth.rule.edit');
+    Route::post('/auth/rule/del', 'RuleController@del')->name('auth.rule.del');
+    Route::post('/auth/rule/multi', 'RuleController@multi')->name('auth.rule.multi');
 });
