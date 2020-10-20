@@ -29,13 +29,14 @@ class AdminController extends BackendController
         parent::_initialize();
         //初始化数据
         $this->middleware(AdminMiddleware::class);
+
+        $this->model = new Admin();
     }
 
     public function index(Request $request)
     {
 
         if ($request->isAjax()) {
-
             $childrenGroupIds = $request->childrenGroupIds;
             $groupName        = AuthGroup::whereIn('id', $childrenGroupIds)
                 ->select('id', 'name')->get();
@@ -52,15 +53,15 @@ class AdminController extends BackendController
                 $adminGroupName[$request->auth()->id][$n['id']] = $n['name'];
             }
 
-            list($where, $sort, $order, $offset, $limit) = $this->buildparams(new Admin());
-            $total = Admin::
-            where($where)
+            list($where, $sort, $order, $offset, $limit) = $this->buildparams();
+            $total = $this->model
+                ->where($where)
                 ->whereIn('id', $request->childrenAdminIds)
                 ->orderBy($sort, $order)
                 ->count();
 
-            $list = Admin::
-            where($where)
+            $list = $this->model
+                ->where($where)
                 ->whereIn('id', $request->childrenAdminIds)
                 ->select('*')
                 ->orderBy($sort, $order)

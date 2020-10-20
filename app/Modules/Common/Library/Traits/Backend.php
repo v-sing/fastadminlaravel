@@ -187,15 +187,14 @@ trait Backend
      * @param boolean $model 当前使用的主表model
      * @return array
      */
-    protected function buildparams($model, $searchfields = null, $relationSearch = null)
+    protected function buildparams($searchfields = null, $relationSearch = null)
     {
-        $model          = is_null($model) ? $this->model : $model;
         $searchfields   = is_null($searchfields) ? $this->searchFields : $searchfields;
         $relationSearch = is_null($relationSearch) ? $this->relationSearch : $relationSearch;
         $search         = \request()->get("search", '');
         $filter         = \request()->get("filter", '');
         $op             = \request()->get("op", '', 'trim');
-        $sort           = \request()->get("sort", "id");
+        $sort           = \request()->get("sort", !empty($this->model) && $this->model->getPk() ? $this->model->getPk() : 'id');
         $order          = \request()->get("order", "DESC");
         $offset         = \request()->get("offset", 0);
         $limit          = \request()->get("limit", 0);
@@ -206,7 +205,7 @@ trait Backend
         $tableName      = '';
         if ($relationSearch) {
             if (!empty($model)) {
-                $name      = parseName(basename(str_replace('\\', '/', get_class($model))));
+                $name      = $this->parseName(basename(str_replace('\\', '/', get_class($this->model))));
                 $tableName = $name . '.';
             }
             $sortArr = explode(',', $sort);
@@ -361,6 +360,28 @@ trait Backend
         };
 
         return [$where, $sort, $order, $offset, $limit];
+    }
+
+    /**
+     * 字符串命名风格转换
+     * type 0 将 Java 风格转换为 C 的风格 1 将 C 风格转换为 Java 的风格
+     * @access public
+     * @param  string $name 字符串
+     * @param  integer $type 转换类型
+     * @param  bool $ucfirst 首字母是否大写（驼峰规则）
+     * @return string
+     */
+    private function parseName($name, $type = 0, $ucfirst = true)
+    {
+        if ($type) {
+            $name = preg_replace_callback('/_([a-zA-Z])/', function ($match) {
+                return strtoupper($match[1]);
+            }, $name);
+
+            return $ucfirst ? ucfirst($name) : lcfirst($name);
+        }
+
+        return strtolower(trim(preg_replace("/[A-Z]/", "_\\0", $name), "_"));
     }
 
     /**
