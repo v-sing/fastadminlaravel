@@ -88,7 +88,7 @@ class GroupController extends BackendController
     {
 
         $ids = $request->get('ids');
-        $row = AuthGroup::query()->where('id', $ids)->first();
+        $row = AuthGroup::query()->where('id', $ids)->≈();
         if (!$row) {
             $this->error(lang('No Results were found'));
         }

@@ -67,10 +67,9 @@ class RuleController extends BackendController
                     $this->error(lang('The non-menu rule must have parent'));
                 }
                 $this->Validator($params, [
-                    'name'  => 'required|format|unique:AuthRule',
-                    'title' => 'required',
-                ],
-                    ['name.format' => 'URL规则只能是小写字母、数字、下划线和/组成']
+                        'name'  => 'required|unique:auth_rules',
+                        'title' => 'required',
+                    ]
                 );
                 $result = $this->model->insert($params);
                 if ($result === false) {
@@ -86,43 +85,56 @@ class RuleController extends BackendController
 
     public function edit(Request $request)
     {
-        $row = $this->model->get(['id' => $ids]);
+        $ids = $request->get('ids');
+        $row = $this->model->where('id', $ids)->first();
         if (!$row) {
-            $this->error(__('No Results were found'));
+            $this->error(lang('No Results were found'));
         }
-        if ($this->request->isPost()) {
-            $params = $this->request->post("row/a", [], 'strip_tags');
+        if ($request->isMethod('post')) {
+            $params = $request->post("row");
             if ($params) {
                 if (!$params['ismenu'] && !$params['pid']) {
-                    $this->error(__('The non-menu rule must have parent'));
+                    $this->error(lang('The non-menu rule must have parent'));
                 }
                 if ($params['pid'] != $row['pid']) {
-                    $childrenIds = Tree::instance()->init(collection(AuthRule::select())->toArray())->getChildrenIds($row['id']);
+                    $childrenIds = Tree::instance()->init(AuthRule::get()->toArray())->getChildrenIds($row['id']);
                     if (in_array($params['pid'], $childrenIds)) {
-                        $this->error(__('Can not change the parent to child'));
+                        $this->error(lang('Can not change the parent to child'));
                     }
                 }
                 //这里需要针对name做唯一验证
-                $ruleValidate = \think\Loader::validate('AuthRule');
-                $ruleValidate->rule([
-                    'name' => 'require|format|unique:AuthRule,name,' . $row->id,
+                $this->Validator($params, [
+                    'name' => 'required|unique:auth_rules,name,' . $row->id,
                 ]);
-                $result = $row->validate()->save($params);
+                $result = $this->model->where('id', $row->id)->update($params);
                 if ($result === false) {
-                    $this->error($row->getError());
+                    $this->error();
                 }
-                Cache::rm('__menu__');
+                Cache::forget('__menu__');
                 $this->success();
             }
             $this->error();
         }
-        $this->view->assign("row", $row);
-        return $this->view->fetch();
+        $this->assign("row", $row);
+        return $this->view();
     }
 
     public function del(Request $request)
     {
-
+        $ids = $request->get('ids');
+        if ($ids) {
+            $delIds = [];
+            foreach (explode(',', $ids) as $k => $v) {
+                $delIds = array_merge($delIds, Tree::instance()->getChildrenIds($v, true));
+            }
+            $delIds = array_unique($delIds);
+            $count  = $this->model->whereIn('id', $delIds)->delete();
+            if ($count) {
+                Cache::forget('__menu__');
+                $this->success();
+            }
+        }
+        $this->error();
     }
 
     public function multi(Request $request)

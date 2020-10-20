@@ -9,6 +9,7 @@
 namespace App\Modules\Common\Library\Traits;
 
 use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\View;
@@ -393,4 +394,48 @@ trait Backend
         $response = response()->json($data);
         throw  new  HttpResponseException($response);
     }
+
+    /**
+     * 批量更新
+     */
+    public function multi(\Illuminate\Http\Request $request)
+    {
+        $ids = $request->input("ids");
+        if ($ids) {
+            if ($request->has('params')) {
+                parse_str($request->post("params"), $values);
+                $values = array_intersect_key($values, array_flip(is_array($this->multiFields) ? $this->multiFields : explode(',', $this->multiFields)));
+                if ($values || $request->auth->isSuperAdmin()) {
+                    $adminIds = $this->getDataLimitAdminIds();
+                    if (is_array($adminIds)) {
+                        $this->model->whereIn($this->dataLimitField, $adminIds);
+                    }
+                    $count = 0;
+                    DB::beginTransaction();
+                    try {
+                        $list = $this->model->whereIn($this->model->getPk(), $ids)->get();
+                        foreach ($list as $index => $item) {
+                            $count += $item->update($values);
+                        }
+                        DB::commit();
+                    } catch (\PDOException $e) {
+                        DB::rollBack();
+                        $this->error($e->getMessage());
+                    } catch (\Exception $e) {
+                        DB::rollBack();
+                        $this->error($e->getMessage());
+                    }
+                    if ($count) {
+                        $this->success();
+                    } else {
+                        $this->error(lang('No rows were updated'));
+                    }
+                } else {
+                    $this->error(lang('You have no permission'));
+                }
+            }
+        }
+        $this->error(lang('Parameter %s can not be empty', 'ids'));
+    }
+
 }
