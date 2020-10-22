@@ -537,8 +537,11 @@ class Auth extends BaseAuth
     public function getTitle()
     {
         $path     = str_replace(config('modulename') . '/', '', \request()->path());
+        $info=[];
         $ruleList = Cache::get("__MENU__");
-        $info     = array_combine(array_column($ruleList, 'name'), array_column($ruleList, 'title'));
+        if ($ruleList) {
+            $info = array_combine(array_column($ruleList, 'name'), array_column($ruleList, 'title'));
+        }
         return Arr::get($info, $path);
     }
 }

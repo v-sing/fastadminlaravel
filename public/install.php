@@ -18,7 +18,7 @@ define('ROOT_PATH', __DIR__ . DS . '..' . DS);
 define('APP_PATH', ROOT_PATH . 'app' . DS);
 
 // 安装包目录
-define('INSTALL_PATH', APP_PATH . 'Modules' . DS . 'Admin' . DS . 'Command' . DS . 'Install' . DS);
+define('INSTALL_PATH', APP_PATH . 'Console' . DS . 'Commands' . DS . 'Install' . DS);
 
 // 判断文件或目录是否有写的权限
 function is_really_writable($file)
@@ -61,7 +61,7 @@ $dbConfigFile = ROOT_PATH . '.env';
 // 锁定的文件
 $lockFile = INSTALL_PATH . 'install.lock';
 if (is_file($lockFile)) {
-    $errInfo = "当前已经安装{$sitename}，如果需要重新安装，请手动移除application/admin/command/Install/install.lock文件";
+    $errInfo = "当前已经安装{$sitename}，如果需要重新安装，请手动移除app/Console/Commands/Install/install.lock文件";
 } else if (version_compare(PHP_VERSION, '7.3.0', '<')) {
     $errInfo = "当前版本(" . PHP_VERSION . ")过低，请使用PHP7.3以上版本";
 } else if (!extension_loaded("PDO")) {
@@ -147,16 +147,23 @@ if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'POST') {
 
         $config   = @file_get_contents($dbConfigFile);
         $callback = function ($matches) use ($mysqlHostname, $mysqlHostport, $mysqlUsername, $mysqlPassword, $mysqlDatabase, $mysqlPrefix) {
-            $field   = ucfirst($matches[1]);
-            $replace = ${"mysql{$field}"};
-            if ($matches[1] == 'hostport' && $mysqlHostport == 3306) {
+            $mysqlDB_HOST     = $mysqlHostname;
+            $mysqlDB_PORT     = $mysqlHostport;
+            $mysqlDB_USERNAME = $mysqlUsername;
+            $mysqlDB_PASSWORD = $mysqlPassword;
+            $mysqlDB_DATABASE = $mysqlDatabase;
+            $mysqlDB_PREFIX   = $mysqlPrefix;
+            $field            = ucfirst($matches[1]);
+            $replace          = ${"mysql{$field}"};
+            if ($matches[1] == 'DB_PORT' && $mysqlHostport == 3306) {
                 $replace = '';
             }
-            return "'{$matches[1]}'{$matches[2]}=>{$matches[3]}Env::get('database.{$matches[1]}', '{$replace}'),";
+            return "{$matches[1]}={$replace}";
         };
-        $config   = preg_replace_callback("/'(DB_HOST|DB_DATABASE|DB_USERNAME|DB_PASSWORD|DB_PORT|DB_PREFIX)'(\s+)=>(\s+)Env::get\((.*)\)\,/", $callback, $config);
 
-        //检测能否成功写入数据库配置
+        $config = preg_replace_callback("/(DB_HOST|DB_DATABASE|DB_USERNAME|DB_PASSWORD|DB_PORT|DB_PREFIX)=(.*)/i", $callback, $config);
+
+        //检测能否成功写入数据库配
         $result = @file_put_contents($dbConfigFile, $config);
         if (!$result) {
             throw new Exception("无法写入数据库信息到.evn文件，请检查是否有写权限");
@@ -165,12 +172,13 @@ if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'POST') {
         //检测能否成功写入lock文件
         $result = @file_put_contents($lockFile, 1);
         if (!$result) {
-            throw new Exception("无法写入安装锁定到application/admin/command/Install/install.lock文件，请检查是否有写权限");
+            throw new Exception("无法写入安装锁定到app/Console/Commands/Install/install.lock文件，请检查是否有写权限");
         }
 
-        $newSalt     = substr(md5(uniqid(true)), 0, 6);
-        $command="php php artisan install:initialize  --username= {$adminUsername} --email={$adminEmail} --password ={$newPassword} --salt={$newSalt}";
-        exec('');
+        $newSalt = substr(md5(uniqid(true)), 0, 6);
+        $artisan = realpath(ROOT_PATH . "/artisan");
+        $command = "php " . $artisan . " install:initialize  --username={$adminUsername} --email={$adminEmail} --password={$adminPassword} --salt={$newSalt}";
+        exec($command, $out);
         echo "success";
     } catch (PDOException $e) {
         $err = $e->getMessage();

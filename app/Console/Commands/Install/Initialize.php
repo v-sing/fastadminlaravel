@@ -42,6 +42,7 @@ class Initialize extends Command
     {
         //
         Artisan::call('migrate');
+        Artisan::call('migrate:refresh --seed');
         $username = $this->option('username'); // 用--开头指定参数名
         $email    = $this->option('email'); // 用--开头指定参数名
         $password = $this->option('password'); // 用--开头指定参数名
