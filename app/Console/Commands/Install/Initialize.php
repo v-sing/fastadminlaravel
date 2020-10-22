@@ -41,6 +41,8 @@ class Initialize extends Command
     public function handle()
     {
         //
+        Artisan::call('key:generate');
+        exec("cd " . dirname(app_path()) . '&&composer update ');
         Artisan::call('migrate');
         Artisan::call('migrate:refresh --seed');
         $username = $this->option('username'); // 用--开头指定参数名
@@ -60,5 +62,6 @@ class Initialize extends Command
         if ($array) {
             Admin::where('username', 'admin')->update($array);
         }
+        $this->info('应用初始化完成');
     }
 }

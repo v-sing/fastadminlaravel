@@ -9,6 +9,7 @@
 // error_reporting(E_ERROR | E_WARNING | E_PARSE | E_NOTICE);
 // ini_set('display_errors', '1');
 // 定义目录分隔符
+
 define('DS', DIRECTORY_SEPARATOR);
 
 // 定义根目录
@@ -75,6 +76,10 @@ if (is_file($lockFile)) {
         }
     }
     if (!$errInfo) {
+        if (!file_exists($dbConfigFile)) {
+            $command = "cp $dbConfigFile.example  $dbConfigFile";
+            exec($command);
+        }
         $errInfo = '当前权限不足，无法写入配置文件.env<br><a href="https://forum.fastadmin.net/thread/1145?ref=install" target="_blank">点击查看解决办法</a>';
     }
 } else {
@@ -155,9 +160,6 @@ if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'POST') {
             $mysqlDB_PREFIX   = $mysqlPrefix;
             $field            = ucfirst($matches[1]);
             $replace          = ${"mysql{$field}"};
-            if ($matches[1] == 'DB_PORT' && $mysqlHostport == 3306) {
-                $replace = '';
-            }
             return "{$matches[1]}={$replace}";
         };
 
@@ -178,8 +180,8 @@ if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'POST') {
         $newSalt = substr(md5(uniqid(true)), 0, 6);
         $artisan = realpath(ROOT_PATH . "/artisan");
         $command = "php " . $artisan . " install:initialize  --username={$adminUsername} --email={$adminEmail} --password={$adminPassword} --salt={$newSalt}";
-        exec($command, $out);
-        echo "success";
+        echo 'success,' . $command;
+
     } catch (PDOException $e) {
         $err = $e->getMessage();
     } catch (Exception $e) {
@@ -425,9 +427,11 @@ if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'POST') {
 
                     $.post('', $(this).serialize())
                         .done(function (ret) {
-                            if (ret === 'success') {
+
+                            if (ret.indexOf("success") > -1) {
+                                ret = ret.split(',');
                                 $('#error').hide();
-                                $("#success").text("安装成功！开始你的<?php echo $sitename; ?>之旅吧！").show();
+                                $("#success").text("请命令行运行 " + ret[1] +" \r\n 安装成功！开始你的<?php echo $sitename; ?>之旅吧！").show();
                                 $('<a class="btn" href="./">访问首页</a> <a class="btn" href="/admin/login" style="background:#18bc9c">访问后台</a>').insertAfter($button);
                                 $button.remove();
                                 localStorage.setItem("fastep", "installed");
