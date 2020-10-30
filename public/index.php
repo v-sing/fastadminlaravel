@@ -6,18 +6,6 @@
  * @package  Laravel
  * @author   Taylor Otwell <taylor@laravel.com>
  */
-define('DS', DIRECTORY_SEPARATOR);
-
-// 定义根目录
-define('ROOT_PATH', __DIR__ . DS . '..' . DS);
-
-define('APP_PATH', ROOT_PATH . 'app' . DS);
-define('INSTALL_PATH', APP_PATH . 'Console' . DS . 'Commands' . DS . 'Install' . DS);
-$lockFile = INSTALL_PATH . 'install.lock';
-if (!is_file($lockFile)) {
-    header("location:./install.php");
-    exit;
-}
 
 define('LARAVEL_START', microtime(true));
 
