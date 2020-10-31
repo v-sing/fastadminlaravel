@@ -47,54 +47,6 @@ if (!function_exists('jsonp')) {
 }
 
 
-if (!function_exists('getRealRoute')) {
-    function getRealRoute($real = '')
-    {
-        $app = app();
-        if ($real == '') {
-            $real = ltrim(\request()->getPathInfo(), '/');
-        }
-        $routes = $app->routes->getRoutes();
-        $uri    = array_column(toArray($routes), 'uri');
-        $action = array_column(toArray($routes), 'action');
-        foreach ($action as $k => $v) {
-            if (!isset($v['prefix']) || is_null($v['prefix'])) {
-                $action[$k]['prefix'] = 'web';
-            }
-            if (!isset($v['controller'])) {
-                $action[$k]['controller'] = '';
-            }
-        }
-        $module     = array_column($action, 'prefix');
-        $controller = array_column($action, 'controller');
-
-        $array = [];
-        foreach ($controller as $key => $value) {
-            if (preg_match('/([\w]+)Controller@(.*?)$/', $value, $matches)) {
-                $array[$key] = [
-                    'uri'        => $uri[$key],
-                    'module'     => $module[$key],
-                    'controller' => strtolower($matches[1]),
-                    'action'     => strtolower($matches[2]),
-                    'realPath'   => $module[$key] . '/' . strtolower($matches[1]) . '/' . strtolower($matches[2])
-                ];
-            } else {
-                $array[$key] = [
-                    'uri'        => $uri[$key],
-                    'module'     => $module[$key],
-                    'controller' => '',
-                    'action'     => '',
-                    'realPath'   => $module[$key] . $key
-                ];
-            }
-        }
-        $index = array_search($real, $uri);
-        return $array[$index];
-
-    }
-
-}
-
 if (!function_exists('toArray')) {
     /**
      * 对象转数组
@@ -167,7 +119,7 @@ if (!function_exists('build_toolbar')) {
                 $nameData1[0], $nameData1[1]
             ];
         }
-        $controller = str_replace('.', '/', strtolower(implode('/',$nameData)));
+        $controller = str_replace('.', '/', strtolower(implode('/', $nameData)));
         $btns       = $btns ? $btns : ['refresh', 'add', 'edit', 'del', 'import'];
         $btns       = is_array($btns) ? $btns : explode(',', $btns);
         $index      = array_search('delete', $btns);

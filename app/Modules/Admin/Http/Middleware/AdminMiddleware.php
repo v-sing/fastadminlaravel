@@ -27,20 +27,20 @@ class AdminMiddleware
     public function handle($request, \Closure $next)
     {
 
-        $this->childrenAdminIds = $request->auth()->getChildrenAdminIds(true);
-        $this->childrenGroupIds = $request->auth()->getChildrenGroupIds(true);
+        $this->childrenAdminIds = $request->auth->getChildrenAdminIds(true);
+        $this->childrenGroupIds = $request->auth->getChildrenGroupIds(true);
 
         $groupList = AuthGroup::whereIn('id', $this->childrenGroupIds)->get()->toArray();
         Tree::instance()->init($groupList);
         $groupdata = [];
-        if ($request->auth()->isSuperAdmin()) {
+        if ($request->auth->isSuperAdmin()) {
             $result = Tree::instance()->getTreeList(Tree::instance()->getTreeArray(0));
             foreach ($result as $k => $v) {
                 $groupdata[$v['id']] = $v['name'];
             }
         } else {
             $result = [];
-            $groups = $request->auth()->getGroups();
+            $groups = $request->auth->getGroups();
             foreach ($groups as $m => $n) {
                 $childlist = Tree::instance()->getTreeList(Tree::instance()->getTreeArray($n['id']));
                 $temp      = [];

@@ -20,7 +20,7 @@ class IndexController extends BackendController
 
     public function index(Request $request)
     {
-        $auth = $request->auth();
+        $auth = $request->auth;
         list($menulist, $navlist, $fixedmenu, $referermenu) = $auth->getSidebar([
             'dashboard' => 'hot',
             'addon'     => ['new', 'red', 'badge'],

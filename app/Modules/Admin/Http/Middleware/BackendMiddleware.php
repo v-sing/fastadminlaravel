@@ -24,14 +24,13 @@ class BackendMiddleware
      */
     public function handle($request, \Closure $next)
     {
+        /**
+         * 初始化
+         */
+        $request->_initialize();
         $config = Config::cache();
         config($config);
-        $request->auth           = $request->auth();
         $request->config         = $config;
-        $request->modulename     = $config['modulename'];
-        $request->controllername = $config['controllername'];
-        $request->actionname     = $config['actionname'];
-        $request->modulename     = $config['modulename'];
         $request->filterpath     = str_replace($config['modulename'] . '/', '', $request->path());
         return $next($request);
 

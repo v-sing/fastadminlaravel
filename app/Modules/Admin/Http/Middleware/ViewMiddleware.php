@@ -45,13 +45,13 @@ class ViewMiddleware
             $view->with('fixedmenu', false);
             $view->with('referermenu', false);
             $view->with('navlist', '');
-            $view->with('title', request()->auth()->getTitle());
-            $view->with('auth', request()->auth());
-            if (request()->auth()->isLogin()) {
-                $view->with('admin', request()->auth()->getUserInfo());
+            $view->with('title', request()->auth->getTitle());
+            $view->with('auth', request()->auth);
+            if (request()->auth->isLogin()) {
+                $view->with('admin', request()->auth->getUserInfo());
             }
         });
-        AdminLog::setTitle(lang(request()->auth()->getTitle()));
+        AdminLog::setTitle(lang(request()->auth->getTitle()));
         return $next($request);
 
     }

@@ -20,23 +20,41 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form'], function ($, undefin
                 url: $.fn.bootstrapTable.defaults.extend.index_url,
                 columns: [
                     [
-                        {field: 'state', checkbox: true, },
+                        {field: 'state', checkbox: true,},
                         {field: 'id', title: 'ID', operate: false},
                         {field: 'username', title: __('Username'), formatter: Table.api.formatter.search},
                         {field: 'title', title: __('Title'), operate: 'LIKE %...%', placeholder: '模糊搜索'},
                         {field: 'url', title: __('Url'), align: 'left', formatter: Table.api.formatter.url},
-                        {field: 'ip', title: __('IP'), events: Table.api.events.ip, formatter: Table.api.formatter.search},
-                        {field: 'browser', title: __('Browser'), operate: false, formatter: Controller.api.formatter.browser},
-                        {field: 'createtime', title: __('Create time'), formatter: Table.api.formatter.datetime, operate: 'RANGE', addclass: 'datetimerange', sortable: true},
-                        {field: 'operate', title: __('Operate'), table: table,
+                        {
+                            field: 'ip',
+                            title: __('IP'),
+                            events: Table.api.events.ip,
+                            formatter: Table.api.formatter.search
+                        },
+                        {
+                            field: 'browser',
+                            title: __('Browser'),
+                            operate: false,
+                            formatter: Controller.api.formatter.browser
+                        },
+                        {
+                            field: 'created_at',
+                            title: __('Create time'),
+                            formatter: Table.api.formatter.datetime,
+                            operate: 'RANGE',
+                            addclass: 'datetimerange',
+                            sortable: true
+                        },
+                        {
+                            field: 'operate', title: __('Operate'), table: table,
                             events: Table.api.events.operate,
                             buttons: [{
-                                    name: 'detail',
-                                    text: __('Detail'),
-                                    icon: 'fa fa-list',
-                                    classname: 'btn btn-info btn-xs btn-detail btn-dialog',
-                                    url: 'auth/adminlog/detail'
-                                }],
+                                name: 'detail',
+                                text: __('Detail'),
+                                icon: 'fa fa-list',
+                                classname: 'btn btn-info btn-xs btn-detail btn-dialog',
+                                url: 'auth/adminlog/detail'
+                            }],
                             formatter: Table.api.formatter.operate
                         }
                     ]

@@ -84,7 +84,7 @@ class AjaxController extends BackendController
                     $imageheight = isset($imgInfo[1]) ? $imgInfo[1] : $imageheight;
                 }
                 $params     = array(
-                    'admin_id'    => (int)$request->auth()->id,
+                    'admin_id'    => (int)$request->auth->id,
                     'user_id'     => 0,
                     'filesize'    => $size,
                     'imagewidth'  => $imagewidth,

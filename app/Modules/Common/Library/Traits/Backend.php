@@ -171,12 +171,12 @@ trait Backend
         if (!$this->dataLimit) {
             return null;
         }
-        if (\request()->auth()->isSuperAdmin()) {
+        if (\request()->auth->isSuperAdmin()) {
             return null;
         }
         $adminIds = [];
         if (in_array($this->dataLimit, ['auth', 'personal'])) {
-            $adminIds = $this->dataLimit == 'auth' ? \request()->auth()->getChildrenAdminIds(true) : [\request()->auth()->id];
+            $adminIds = $this->dataLimit == 'auth' ? \request()->auth->getChildrenAdminIds(true) : [\request()->auth->id];
         }
         return $adminIds;
     }
@@ -195,7 +195,7 @@ trait Backend
         $search         = \request()->get("search", '');
         $filter         = \request()->get("filter", '');
         $op             = \request()->get("op", '', 'trim');
-        $sort           = \request()->get("sort", !empty($this->model) && $this->model->getPk() ? $this->model->getPk() : 'id');
+        $sort           = \request()->get("sort", !empty($this->model) && $this->model->getKeyName() ? $this->model->getKeyName() : 'id');
         $order          = \request()->get("order", "DESC");
         $offset         = \request()->get("offset", 0);
         $limit          = \request()->get("limit", 0);
@@ -413,7 +413,7 @@ trait Backend
                     $count = 0;
                     DB::beginTransaction();
                     try {
-                        $list = $this->model->whereIn($this->model->getPk(), $ids)->get();
+                        $list = $this->model->whereIn($this->model->getKeyName(), $ids)->get();
                         foreach ($list as $index => $item) {
                             $count += $item->update($values);
                         }

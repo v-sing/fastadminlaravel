@@ -186,7 +186,6 @@ class Config extends Model
             $array[$item['crux_group']][$item['name']] = $value;
         }
         $array ['configgroup']               = $array['dictionary']['configgroup'];
-        $route                               = getRealRoute();
         $config['site']                      = $array['basic'];
         $config['site']['Languagetypes']     = 'zh';
         $config['site']['configgroup']       = $array ['configgroup'];
@@ -206,12 +205,12 @@ class Config extends Model
         $config['upload']['savekey']         = isset($array['upload']['savekey']) ? $array['upload']['savekey'] : '/uploads/{year}{mon}{day}/{filemd5}{.suffix}';
         $config['upload']['disks']           = isset($array['upload']['disks']) ? $array['upload']['disks'] : 'public';
         $config                              = array_merge($config, [
-            'modulename'     => trim($route['module'], '/'),
-            'controllername' => $route['controller'],
-            'actionname'     => $route['action'],
-            'jsname'         => 'backend/' . $route['controller'],
+            'modulename'     => trim(request()->module(), '/'),
+            'controllername' => request()->controller(),
+            'actionname'     => request()->action(),
+            'jsname'         => 'backend/' . str_replace('.', '/', request()->controller()),
             'app_debug'      => 'ajax/upload',
-            'moduleurl'      => $route['module'],
+            'moduleurl'      => request()->module(),
             'language'       => 'zh-CN',
             'cdnurl'         => ''
         ]);

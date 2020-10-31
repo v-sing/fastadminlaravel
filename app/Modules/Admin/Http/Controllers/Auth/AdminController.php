@@ -6,7 +6,7 @@
  * Time: 21:56
  */
 
-namespace App\Modules\Admin\Http\Controllers;
+namespace App\Modules\Admin\Http\Controllers\Auth;
 
 
 use App\Modules\Admin\Http\Middleware\AdminMiddleware;
@@ -35,7 +35,6 @@ class AdminController extends BackendController
 
     public function index(Request $request)
     {
-
         if ($request->isAjax()) {
             $childrenGroupIds = $request->childrenGroupIds;
             $groupName        = AuthGroup::whereIn('id', $childrenGroupIds)
@@ -48,9 +47,9 @@ class AdminController extends BackendController
                 if (isset($groupName[$v->group_id]))
                     $adminGroupName[$v->uid][$v->group_id] = $groupName[$v->group_id]->name;
             }
-            $groups = $request->auth()->getGroups();
+            $groups = $request->auth->getGroups();
             foreach ($groups as $m => $n) {
-                $adminGroupName[$request->auth()->id][$n['id']] = $n['name'];
+                $adminGroupName[$request->auth->id][$n['id']] = $n['name'];
             }
 
             list($where, $sort, $order, $offset, $limit) = $this->buildparams();
@@ -158,7 +157,7 @@ class AdminController extends BackendController
             }
             $this->error();
         }
-        $grouplist = $request->auth()->getGroups($row['id']);
+        $grouplist = $request->auth->getGroups($row['id']);
         $groupids  = [];
         foreach ($grouplist as $k => $v) {
             $groupids[] = $v['id'];
@@ -184,7 +183,7 @@ class AdminController extends BackendController
                 foreach ($adminList as $k => $v) {
                     $deleteIds[] = $v->id;
                 }
-                $deleteIds = array_diff($deleteIds, [$request->auth()->id]);
+                $deleteIds = array_diff($deleteIds, [$request->auth->id]);
                 if ($deleteIds) {
                     Admin::destroy($deleteIds);
                     AuthGroupAccess::whereIn('uid', $deleteIds)->delete();

@@ -6,7 +6,7 @@
  * Time: 11:45
  */
 
-namespace App\Modules\Admin\Http\Controllers;
+namespace App\Modules\Admin\Http\Controllers\Auth;
 
 
 use App\Modules\Admin\Http\Middleware\GroupMiddleware;
@@ -67,7 +67,7 @@ class GroupController extends BackendController
             // 父级别的规则节点
             $parentrules = explode(',', $parentmodel->rules);
             // 当前组别的规则节点
-            $currentrules = $request->auth()->getRuleIds();
+            $currentrules = $request->auth->getRuleIds();
             $rules        = $params['rules'];
             // 如果父组不是超级管理员则需要过滤规则节点,不能超过父组别的权限
             $rules = in_array('*', $parentrules) ? $rules : array_intersect($parentrules, $rules);
@@ -107,7 +107,7 @@ class GroupController extends BackendController
             // 父级别的规则节点
             $parentrules = explode(',', $parentmodel->rules);
             // 当前组别的规则节点
-            $currentrules = $request->auth()->getRuleIds();
+            $currentrules = $request->auth->getRuleIds();
             $rules        = $params['rules'];
             // 如果父组不是超级管理员则需要过滤规则节点,不能超过父组别的权限
             $rules = in_array('*', $parentrules) ? $rules : array_intersect($parentrules, $rules);
@@ -130,7 +130,7 @@ class GroupController extends BackendController
 
         $ids       = $request->post('ids');
         $ids       = explode(',', $ids);
-        $grouplist = $request->auth()->getGroups();
+        $grouplist = $request->auth->getGroups();
         $group_ids = array_map(function ($group) {
             return $group['id'];
         }, $grouplist);
@@ -201,9 +201,9 @@ class GroupController extends BackendController
             $groupTree->init($model->whereIn('id', $request->childrenGroupIds)->select()->toArray());
 
             //读取当前角色下规则ID集合
-            $adminRuleIds = $request->auth()->getRuleIds();
+            $adminRuleIds = $request->auth->getRuleIds();
             //是否是超级管理员
-            $superadmin = $request->auth()->isSuperAdmin();
+            $superadmin = $request->auth->isSuperAdmin();
             //当前拥有的规则ID集合
             $currentRuleIds = $id ? explode(',', $currentGroupModel->rules) : [];
             if (!$id || !in_array($pid, $request->childrenGroupIds) || !in_array($pid, $groupTree->getChildrenIds($id, true))) {

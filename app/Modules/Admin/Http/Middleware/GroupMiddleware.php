@@ -19,14 +19,14 @@ class GroupMiddleware
     public function handle($request, \Closure $next)
     {
 
-        $this->childrenGroupIds = $request->auth()->getChildrenGroupIds(true);
+        $this->childrenGroupIds = $request->auth->getChildrenGroupIds(true);
         $groupList              = AuthGroup::whereIn('id', $this->childrenGroupIds)->get()->toArray();
         Tree::instance()->init($groupList);
         $result = [];
-        if ($request->auth()->isSuperAdmin()) {
+        if ($request->auth->isSuperAdmin()) {
             $result = Tree::instance()->getTreeList(Tree::instance()->getTreeArray(0));
         } else {
-            $groups = $request->auth()->getGroups();
+            $groups = $request->auth->getGroups();
             foreach ($groups as $m => $n) {
                 $result = array_merge($result, Tree::instance()->getTreeList(Tree::instance()->getTreeArray($n['pid'])));
             }
@@ -38,7 +38,7 @@ class GroupMiddleware
 
         view()->composer('*', function ($view) use ($groupName, $request) {
             $view->with('groupdata', $groupName);
-            $view->with('groups', ['id' => $request->auth()->id, 'group_ids' => $request->auth()->getGroupIds()]);
+            $view->with('groups', ['id' => $request->auth->id, 'group_ids' => $request->auth->getGroupIds()]);
 
         });
         $request->childrenGroupIds = $this->childrenGroupIds;

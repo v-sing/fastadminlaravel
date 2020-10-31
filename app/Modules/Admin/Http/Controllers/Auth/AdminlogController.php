@@ -6,7 +6,7 @@
  * Time: 11:45
  */
 
-namespace App\Modules\Admin\Http\Controllers;
+namespace App\Modules\Admin\Http\Controllers\Auth;
 
 
 use App\Modules\Common\Controllers\BackendController;
