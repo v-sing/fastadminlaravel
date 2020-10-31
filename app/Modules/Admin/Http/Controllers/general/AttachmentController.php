@@ -6,7 +6,7 @@
  * Time: 22:55
  */
 
-namespace App\Modules\Admin\Http\Controllers;
+namespace App\Modules\Admin\Http\Controllers\general;
 
 
 use App\Modules\Common\Controllers\BackendController;

@@ -6,7 +6,7 @@
  * Time: 10:34
  */
 
-namespace App\Modules\Admin\Http\Controllers;
+namespace App\Modules\Admin\Http\Controllers\general;
 
 
 use App\Modules\Common\Controllers\BackendController;
@@ -61,7 +61,7 @@ class ProfileController extends BackendController
             }
             if ($params) {
                 $array = Session::get("admin");
-                Admin::where(['id' => $request->auth()->id])->update($params);
+                Admin::where(['id' => $request->auth->id])->update($params);
                 $array = array_merge($array, $params);
                 //因为个人资料面板读取的Session显示，修改自己资料后同时更新Session
                 Session::put("admin", $array);

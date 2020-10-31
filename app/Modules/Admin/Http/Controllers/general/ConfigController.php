@@ -6,7 +6,7 @@
  * Time: 10:17
  */
 
-namespace App\Modules\Admin\Http\Controllers;
+namespace App\Modules\Admin\Http\Controllers\general;
 
 
 use App\Modules\Common\Controllers\BackendController;
@@ -14,7 +14,7 @@ use App\Modules\Model\Config;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redis;
 
-class GeneralController extends BackendController
+class ConfigController extends BackendController
 {
 
     public function config()
