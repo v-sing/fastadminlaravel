@@ -20,7 +20,7 @@ class LoginController extends BackendController
 
     protected $noNeedLogin = ['login'];
 
-    protected $noNeedRight = ['login','logout'];
+    protected $noNeedRight = ['login', 'logout'];
 
     /**
      * 登陆
@@ -29,7 +29,7 @@ class LoginController extends BackendController
      */
     public function login(Request $request)
     {
-        $auth = new Auth();
+        $auth = $request->auth;
         if ($auth->isLogin()) {
             $this->success(trans('admin::login.You\'ve logged in, do not login again'), 'admin/index');
         }
@@ -42,7 +42,7 @@ class LoginController extends BackendController
             if (config('admin.login_captcha') && !captcha_check($captcha)) {
                 $this->error(trans('admin::login.Verification code is incorrect'));
             }
-            $result = $auth->login($username, $password, $keeplogin ? 1000 : 0);
+            $result = $auth->login($username, $password, $keeplogin);
             if (!$result) {
                 $this->error(trans('admin::login.' . $auth->getError()));
             }
@@ -55,10 +55,9 @@ class LoginController extends BackendController
 
     }
 
-    public function logout()
+    public function logout(Request $request)
     {
-        $auth = new Auth();
-        $auth->logout();
+        $request->auth->logout();
         $this->success(trans('admin::login.Logout successful'), '/admin/login');
     }
 
