@@ -25,6 +25,7 @@ class AttachmentController extends BackendController
 
     public function index(Request $request)
     {
+        dump(parse_underline('xxxx'));exit;
         $mimetypeQuery = [];
         if ($request->isAjax()) {
             $filter    = $request->get('filter');
