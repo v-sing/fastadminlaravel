@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "42f339438ec295b3fb14d522d2d036de",
+    "content-hash": "21c3e1723efcb7ed72034bd2af4d63cc",
     "packages": [
         {
             "name": "alicfeng/identity-card",
@@ -910,57 +910,6 @@
             "time": "2020-05-31T07:30:16+00:00"
         },
         {
-            "name": "future/addons",
-            "version": "dev-main",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/v-sing/admin-addons.git",
-                "reference": "56bf7cfeb6b738fa54da5077e224cb1b1262cf38"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/v-sing/admin-addons/zipball/56bf7cfeb6b738fa54da5077e224cb1b1262cf38",
-                "reference": "56bf7cfeb6b738fa54da5077e224cb1b1262cf38",
-                "shasum": "",
-                "mirrors": [
-                    {
-                        "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
-                        "preferred": true
-                    }
-                ]
-            },
-            "require": {
-                "laravel/framework": "^7.0",
-                "php": "^7.2.5"
-            },
-            "default-branch": true,
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Future\\Admin\\": "src/"
-                },
-                "files": [
-                    "src/helpers.php"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "此処",
-                    "email": "email1946367301@163.com"
-                }
-            ],
-            "description": "基于fastadmin，自制的laravel版本兼容。",
-            "support": {
-                "issues": "https://github.com/v-sing/admin-addons/issues",
-                "source": "https://github.com/v-sing/admin-addons/tree/main"
-            },
-            "time": "2020-11-02T16:22:32+00:00"
-        },
-        {
             "name": "guijianshi/baidu-ocr",
             "version": "2.2.3",
             "source": {
@@ -1582,16 +1531,16 @@
         },
         {
             "name": "laravel/tinker",
-            "version": "v2.5.0",
+            "version": "v2.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/tinker.git",
-                "reference": "45884b526e10a88a1b179fa1a1a24d5468c668c2"
+                "reference": "cde90a7335a2130a4488beb68f4b2141869241db"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/tinker/zipball/45884b526e10a88a1b179fa1a1a24d5468c668c2",
-                "reference": "45884b526e10a88a1b179fa1a1a24d5468c668c2",
+                "url": "https://api.github.com/repos/laravel/tinker/zipball/cde90a7335a2130a4488beb68f4b2141869241db",
+                "reference": "cde90a7335a2130a4488beb68f4b2141869241db",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -1604,13 +1553,13 @@
                 "illuminate/console": "^6.0|^7.0|^8.0",
                 "illuminate/contracts": "^6.0|^7.0|^8.0",
                 "illuminate/support": "^6.0|^7.0|^8.0",
-                "php": "^7.2.5|^8.0",
-                "psy/psysh": "^0.10.4",
-                "symfony/var-dumper": "^4.3.4|^5.0"
+                "php": "^7.2",
+                "psy/psysh": "^0.10.3",
+                "symfony/var-dumper": "^4.3|^5.0"
             },
             "require-dev": {
-                "mockery/mockery": "~1.3.3|^1.4.2",
-                "phpunit/phpunit": "^8.5.8|^9.3.3"
+                "mockery/mockery": "^1.3.1",
+                "phpunit/phpunit": "^8.4|^9.0"
             },
             "suggest": {
                 "illuminate/database": "The Illuminate Database package (^6.0|^7.0|^8.0)."
@@ -1648,11 +1597,7 @@
                 "laravel",
                 "psysh"
             ],
-            "support": {
-                "issues": "https://github.com/laravel/tinker/issues",
-                "source": "https://github.com/laravel/tinker/tree/v2.5.0"
-            },
-            "time": "2020-10-29T13:07:12+00:00"
+            "time": "2020-04-07T15:01:31+00:00"
         },
         {
             "name": "league/commonmark",
@@ -10364,9 +10309,7 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": {
-        "future/addons": 20
-    },
+    "stability-flags": [],
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
@@ -10377,5 +10320,5 @@
         "ext-redis": "^5.2"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.0.0"
+    "plugin-api-version": "1.1.0"
 }
